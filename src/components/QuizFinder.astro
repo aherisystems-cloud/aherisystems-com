@@ -1,0 +1,247 @@
+---
+// QuizFinder.astro - Smart Problem-to-Solution Finder
+---
+
+<div id="quiz-container" class="max-w-2xl mx-auto text-left">
+
+  <!-- STEP DOTS -->
+  <div class="flex items-center justify-center gap-2 mb-6" id="step-indicator">
+    <div class="step-dot w-2.5 h-2.5 rounded-full bg-[#0ABFB8]" data-step="1"></div>
+    <div class="step-dot w-2.5 h-2.5 rounded-full bg-white/20" data-step="2"></div>
+    <div class="step-dot w-2.5 h-2.5 rounded-full bg-white/20" data-step="3"></div>
+    <div class="step-dot w-2.5 h-2.5 rounded-full bg-white/20" data-step="4"></div>
+  </div>
+
+  <div id="quiz-form">
+
+    <!-- STEP 1 -->
+    <div class="quiz-step" data-step="1">
+      <p class="text-[#0ABFB8] text-xs font-bold tracking-widest text-center mb-2">STEP 1 OF 4</p>
+      <h3 class="text-white text-xl font-bold text-center mb-6">What is eating most of your time right now?</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="finance">
+          <span class="text-2xl block mb-2">&#128176;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Chasing invoices and payments</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="email-marketing">
+          <span class="text-2xl block mb-2">&#9993;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Managing emails and follow-ups</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="social-media">
+          <span class="text-2xl block mb-2">&#128241;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Posting on social media</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="project-management">
+          <span class="text-2xl block mb-2">&#128203;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Tracking tasks and projects</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="crm-sales">
+          <span class="text-2xl block mb-2">&#128188;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Finding and managing clients</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="content">
+          <span class="text-2xl block mb-2">&#9997;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Creating content</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="automation">
+          <span class="text-2xl block mb-2">&#9889;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Repetitive manual tasks</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="1" data-value="ai-tools">
+          <span class="text-2xl block mb-2">&#129302;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Using AI in my business</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="quiz-step hidden" data-step="2">
+      <p class="text-[#0ABFB8] text-xs font-bold tracking-widest text-center mb-2">STEP 2 OF 4</p>
+      <h3 class="text-white text-xl font-bold text-center mb-6">What outcome matters most to you?</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="save-time">
+          <span class="text-2xl block mb-2">&#9200;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Save time on repetitive tasks</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="save-money">
+          <span class="text-2xl block mb-2">&#128184;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Reduce my monthly costs</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="make-money">
+          <span class="text-2xl block mb-2">&#128200;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Grow my revenue</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="professional">
+          <span class="text-2xl block mb-2">&#127942;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Look more professional</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="work-less">
+          <span class="text-2xl block mb-2">&#127964;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Work less hours</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-3 transition-all group" data-step="2" data-value="scale">
+          <span class="text-2xl block mb-2">&#128640;</span>
+          <span class="text-white text-sm font-medium group-hover:text-[#0ABFB8] block">Scale without hiring</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="quiz-step hidden" data-step="3">
+      <p class="text-[#0ABFB8] text-xs font-bold tracking-widest text-center mb-2">STEP 3 OF 4</p>
+      <h3 class="text-white text-xl font-bold text-center mb-6">What is your monthly budget for tools?</h3>
+      <div class="grid grid-cols-2 gap-3">
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-4 transition-all group" data-step="3" data-value="free">
+          <span class="text-2xl block mb-2">&#127379;</span>
+          <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Free only</span>
+          <span class="text-white/50 text-xs">I need $0 solutions</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-4 transition-all group" data-step="3" data-value="budget">
+          <span class="text-2xl block mb-2">&#128181;</span>
+          <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Under $30/month</span>
+          <span class="text-white/50 text-xs">Lean and affordable</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-4 transition-all group" data-step="3" data-value="mid">
+          <span class="text-2xl block mb-2">&#128179;</span>
+          <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Under $100/month</span>
+          <span class="text-white/50 text-xs">Happy to invest</span>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-4 py-4 transition-all group" data-step="3" data-value="premium">
+          <span class="text-2xl block mb-2">&#128142;</span>
+          <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">No limit</span>
+          <span class="text-white/50 text-xs">Best tool wins</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="quiz-step hidden" data-step="4">
+      <p class="text-[#0ABFB8] text-xs font-bold tracking-widest text-center mb-2">STEP 4 OF 4</p>
+      <h3 class="text-white text-xl font-bold text-center mb-6">How technical are you?</h3>
+      <div class="grid grid-cols-1 gap-3 max-w-sm mx-auto">
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-5 py-4 transition-all group flex items-center gap-4" data-step="4" data-value="beginner">
+          <span class="text-3xl flex-shrink-0">&#128587;</span>
+          <div>
+            <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Not technical at all</span>
+            <span class="text-white/50 text-xs">I need simple no-code tools</span>
+          </div>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-5 py-4 transition-all group flex items-center gap-4" data-step="4" data-value="intermediate">
+          <span class="text-3xl flex-shrink-0">&#128187;</span>
+          <div>
+            <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Some experience</span>
+            <span class="text-white/50 text-xs">I can follow a setup guide</span>
+          </div>
+        </button>
+        <button class="quiz-option text-left bg-white/5 hover:bg-[#0ABFB8]/20 border border-white/15 hover:border-[#0ABFB8] rounded-xl px-5 py-4 transition-all group flex items-center gap-4" data-step="4" data-value="advanced">
+          <span class="text-3xl flex-shrink-0">&#9881;</span>
+          <div>
+            <span class="text-white text-sm font-bold block group-hover:text-[#0ABFB8]">Pretty technical</span>
+            <span class="text-white/50 text-xs">I can handle complex tools</span>
+          </div>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESULTS -->
+  <div id="quiz-results" class="hidden text-center py-4">
+    <div class="text-5xl mb-4">&#127919;</div>
+    <h3 class="text-white text-2xl font-bold mb-2">Your perfect matches are ready</h3>
+    <p class="text-gray-300 mb-6">Based on your answers here is exactly where to go:</p>
+    <div id="results-links" class="flex flex-col gap-3 max-w-sm mx-auto mb-6"></div>
+    <button id="quiz-restart" class="text-white/40 hover:text-white text-sm transition-colors underline mt-2">
+      Start over
+    </button>
+  </div>
+
+</div>
+
+<script>
+  const answers = {};
+
+  document.querySelectorAll(".quiz-option").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      const step = btn.getAttribute("data-step");
+      const value = btn.getAttribute("data-value");
+      answers["step" + step] = value;
+      nextStep(parseInt(step));
+    });
+  });
+
+  function nextStep(current) {
+    var currentStep = document.querySelector(".quiz-step[data-step='" + current + "']");
+    if (currentStep) currentStep.classList.add("hidden");
+
+    var currentDot = document.querySelector(".step-dot[data-step='" + current + "']");
+    if (currentDot) {
+      currentDot.classList.remove("bg-[#0ABFB8]");
+      currentDot.classList.add("bg-white/40");
+    }
+
+    if (current < 4) {
+      var nextStepEl = document.querySelector(".quiz-step[data-step='" + (current + 1) + "']");
+      if (nextStepEl) nextStepEl.classList.remove("hidden");
+
+      var nextDot = document.querySelector(".step-dot[data-step='" + (current + 1) + "']");
+      if (nextDot) {
+        nextDot.classList.remove("bg-white/20");
+        nextDot.classList.add("bg-[#0ABFB8]");
+      }
+    } else {
+      showResults();
+    }
+  }
+
+  function showResults() {
+    var form = document.getElementById("quiz-form");
+    var indicator = document.getElementById("step-indicator");
+    var results = document.getElementById("quiz-results");
+    if (form) form.classList.add("hidden");
+    if (indicator) indicator.classList.add("hidden");
+    if (results) results.classList.remove("hidden");
+
+    var category = answers["step1"] || "automation";
+    var budget = answers["step3"] || "free";
+    var outcome = answers["step2"] || "save-time";
+
+    var links = [
+      { label: "Best tools for your situation", url: "/category/" + category + "?budget=" + budget, color: "#0ABFB8" },
+      { label: "Ready-made system for this problem", url: "/systems?category=" + category + "&outcome=" + outcome, color: "#1A2F4E" },
+      { label: "Free template to get started today", url: "/templates?category=" + category, color: "#059669" },
+    ];
+
+    var container = document.getElementById("results-links");
+    if (container) {
+      container.innerHTML = links.map(function(link) {
+        return '<a href="' + link.url + '" style="background-color:' + link.color + '" class="block text-white font-semibold px-6 py-3 rounded-xl text-sm hover:opacity-90 transition-opacity">' + link.label + '</a>';
+      }).join("");
+    }
+  }
+
+  var restartBtn = document.getElementById("quiz-restart");
+  if (restartBtn) {
+    restartBtn.addEventListener("click", function() {
+      Object.keys(answers).forEach(function(k) { delete answers[k]; });
+
+      var results = document.getElementById("quiz-results");
+      var form = document.getElementById("quiz-form");
+      var indicator = document.getElementById("step-indicator");
+      if (results) results.classList.add("hidden");
+      if (form) form.classList.remove("hidden");
+      if (indicator) indicator.classList.remove("hidden");
+
+      document.querySelectorAll(".quiz-step").forEach(function(step, i) {
+        if (i === 0) step.classList.remove("hidden");
+        else step.classList.add("hidden");
+      });
+
+      document.querySelectorAll(".step-dot").forEach(function(dot, i) {
+        dot.classList.remove("bg-[#0ABFB8]", "bg-white/40");
+        if (i === 0) dot.classList.add("bg-[#0ABFB8]");
+        else dot.classList.add("bg-white/20");
+      });
+    });
+  }
+</script>
