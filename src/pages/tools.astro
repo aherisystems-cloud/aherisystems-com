@@ -1,0 +1,405 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const tools = [
+  {
+    name: "Zapier",
+    tagline: "Connect your apps and automate repetitive tasks — no code needed",
+    description: "Zapier lets you build automated workflows between 6,000+ apps. Set it up once and it runs forever — no developer required.",
+    category: "Automation",
+    slug: "zapier",
+    affiliate_url: "https://zapier.com",
+    pricing: "Free / from $19.99/mo",
+    pricing_type: "Freemium",
+    rating: 4.8,
+    reviews: 12400,
+    badge: "Most Popular",
+    badgeColor: "#0ABFB8",
+    tags: ["automation", "no-code", "workflow", "integration"],
+    time_saved: "5hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "Make",
+    tagline: "Visual automation that handles complex workflows your business runs on",
+    description: "Make (formerly Integromat) gives you a visual canvas to build powerful automations. More flexible than Zapier, better value for complex workflows.",
+    category: "Automation",
+    slug: "make",
+    affiliate_url: "https://make.com",
+    pricing: "Free / from $9/mo",
+    pricing_type: "Freemium",
+    rating: 4.7,
+    reviews: 8200,
+    badge: "Best Value",
+    badgeColor: "#059669",
+    tags: ["automation", "visual", "workflow", "no-code"],
+    time_saved: "6hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "Notion",
+    tagline: "One workspace for your entire business — notes, tasks, wikis and databases",
+    description: "Notion replaces your scattered tools with one clean workspace. Manage projects, write SOPs, track clients and run your operations in one place.",
+    category: "Project Management",
+    slug: "notion",
+    affiliate_url: "https://notion.so",
+    pricing: "Free / from $8/mo",
+    pricing_type: "Freemium",
+    rating: 4.8,
+    reviews: 21000,
+    badge: "Africa Ready",
+    badgeColor: "#D97706",
+    tags: ["project management", "notes", "wiki", "database"],
+    time_saved: "4hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "ConvertKit",
+    tagline: "Build your email list and sell digital products on autopilot",
+    description: "ConvertKit is built for creators and solopreneurs. Grow your list, send automated sequences, and sell products — all from one platform.",
+    category: "Email Marketing",
+    slug: "convertkit",
+    affiliate_url: "https://convertkit.com",
+    pricing: "Free up to 1,000 / from $25/mo",
+    pricing_type: "Freemium",
+    rating: 4.6,
+    reviews: 6800,
+    badge: "MSME Verified",
+    badgeColor: "#0052CC",
+    tags: ["email marketing", "automation", "creator", "list building"],
+    time_saved: "3hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "HubSpot CRM",
+    tagline: "Track every lead, deal and client interaction — free forever",
+    description: "HubSpot's free CRM gives you a complete view of your sales pipeline. Track emails, calls, meetings and deals without paying a cent.",
+    category: "CRM & Sales",
+    slug: "hubspot",
+    affiliate_url: "https://hubspot.com",
+    pricing: "Free / from $45/mo",
+    pricing_type: "Freemium",
+    rating: 4.5,
+    reviews: 18900,
+    badge: "Free Forever",
+    badgeColor: "#DC2626",
+    tags: ["crm", "sales", "pipeline", "free"],
+    time_saved: "4hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "ClickUp",
+    tagline: "Replace every project management tool with one that actually works",
+    description: "ClickUp brings tasks, docs, goals, and time tracking into one platform. Teams that switch to ClickUp save an average of one day per week.",
+    category: "Project Management",
+    slug: "clickup",
+    affiliate_url: "https://clickup.com",
+    pricing: "Free / from $7/mo",
+    pricing_type: "Freemium",
+    rating: 4.7,
+    reviews: 14300,
+    badge: "Top Rated",
+    badgeColor: "#7C3AED",
+    tags: ["project management", "tasks", "team", "productivity"],
+    time_saved: "7hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+  {
+    name: "Wave",
+    tagline: "Free invoicing, accounting and payments built for small businesses",
+    description: "Wave gives you professional invoicing, expense tracking and accounting reports for free. Built specifically for small businesses and freelancers.",
+    category: "Finance & Invoicing",
+    slug: "wave",
+    affiliate_url: "https://waveapps.com",
+    pricing: "Free / pay per transaction",
+    pricing_type: "Free",
+    rating: 4.4,
+    reviews: 9100,
+    badge: "100% Free",
+    badgeColor: "#059669",
+    tags: ["invoicing", "accounting", "free", "finance"],
+    time_saved: "3hrs/week",
+    africa_ready: false,
+    msme_verified: true,
+  },
+  {
+    name: "Buffer",
+    tagline: "Schedule and publish social media content without the daily grind",
+    description: "Buffer lets you plan, schedule and publish to all your social channels from one dashboard. Spend 30 minutes on Monday — Buffer handles the rest of the week.",
+    category: "Social Media",
+    slug: "buffer",
+    affiliate_url: "https://buffer.com",
+    pricing: "Free / from $6/mo",
+    pricing_type: "Freemium",
+    rating: 4.5,
+    reviews: 7600,
+    badge: "Time Saver",
+    badgeColor: "#0891B2",
+    tags: ["social media", "scheduling", "content", "automation"],
+    time_saved: "5hrs/week",
+    africa_ready: true,
+    msme_verified: true,
+  },
+];
+
+const categories = ["All", "Automation", "AI Tools", "CRM & Sales", "Email Marketing", "Project Management", "Finance & Invoicing", "Content Creation", "Social Media"];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Business Automation & AI Tools Directory",
+  "description": "The most comprehensive directory of automation and AI tools for MSMEs and solo entrepreneurs. Find the right tool to save time, save money and make money.",
+  "url": "https://aherisystems.com/tools",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Aheri Systems",
+    "url": "https://aherisystems.com"
+  }
+};
+---
+
+<Layout
+  title="Business Automation & AI Tools Directory"
+  description="Find the right automation and AI tool for your business. 2,400+ tools reviewed and verified for MSMEs and solo entrepreneurs. Save time, save money, make money."
+>
+
+  <!-- SCHEMA MARKUP -->
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+  <!-- PAGE HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+
+      <div class="inline-flex items-center gap-2 bg-[#0ABFB8]/10 border border-[#0ABFB8]/30 rounded-full px-4 py-1.5 mb-5">
+        <span class="text-[#0ABFB8] text-xs font-bold tracking-wide">2,400+ TOOLS REVIEWED &amp; VERIFIED</span>
+      </div>
+
+      <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Find the Right Tool.<br/>
+        <span class="text-[#0ABFB8]">Stop Wasting Time and Money.</span>
+      </h1>
+
+      <p class="text-gray-300 text-lg mb-3 max-w-2xl mx-auto">
+        Every tool here has been reviewed for MSMEs and solo entrepreneurs. We only recommend what actually works — and we tell you exactly what it saves you.
+      </p>
+
+      <p class="text-gray-400 text-sm mb-8 max-w-xl mx-auto">
+        Look for the <span class="text-[#0ABFB8] font-semibold">MSME Verified</span> and <span class="text-amber-400 font-semibold">Africa Ready</span> badges — tools that work for your budget, your context, and your business size.
+      </p>
+
+      <!-- SEARCH -->
+      <div class="flex gap-2 max-w-xl mx-auto">
+        <input
+          id="tool-search"
+          type="text"
+          placeholder="Search 2,400+ tools..."
+          class="flex-1 px-5 py-3.5 rounded-xl bg-white text-gray-900 text-sm font-medium placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]"
+        />
+        <button class="bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold px-6 py-3.5 rounded-xl transition-colors text-sm">
+          Search
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY FILTER -->
+  <section class="bg-white border-b border-gray-100 sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex gap-2 overflow-x-auto py-3 scrollbar-hide">
+        {categories.map((cat) => (
+          <button
+            class="category-filter flex-shrink-0 px-4 py-2 rounded-lg text-sm font-semibold transition-colors border whitespace-nowrap"
+            class:list={[
+              cat === "All"
+                ? "bg-[#1A2F4E] text-white border-[#1A2F4E]"
+                : "bg-white text-gray-600 border-gray-200 hover:border-[#0ABFB8] hover:text-[#0ABFB8]"
+            ]}
+            data-category={cat}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS GRID -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+
+      <!-- Results count -->
+      <div class="flex items-center justify-between mb-6">
+        <p class="text-gray-500 text-sm">
+          Showing <span id="results-count" class="font-bold text-[#1A2F4E]">{tools.length}</span> tools
+        </p>
+        <select class="text-sm border border-gray-200 rounded-lg px-3 py-2 text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]">
+          <option>Sort: Most Popular</option>
+          <option>Sort: Highest Rated</option>
+          <option>Sort: Free First</option>
+          <option>Sort: Most Time Saved</option>
+        </select>
+      </div>
+
+      <!-- Grid -->
+      <div id="tools-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        {tools.map((tool) => (
+          <div
+            class="tool-card bg-white border border-gray-200 rounded-xl p-5 hover:border-[#0ABFB8] hover:shadow-lg transition-all flex flex-col"
+            data-category={tool.category}
+            data-name={tool.name.toLowerCase()}
+          >
+            <!-- Card Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-11 h-11 bg-[#1A2F4E] rounded-xl flex items-center justify-center text-white font-extrabold text-lg flex-shrink-0">
+                {tool.name[0]}
+              </div>
+              <span
+                class="text-xs font-bold px-2.5 py-1 rounded-full text-white"
+                style={`background-color: ${tool.badgeColor}`}
+              >
+                {tool.badge}
+              </span>
+            </div>
+
+            <!-- Tool Info -->
+            <h2 class="font-bold text-[#1A2F4E] text-base mb-1">{tool.name}</h2>
+            <p class="text-gray-500 text-xs leading-relaxed mb-3 flex-1">{tool.tagline}</p>
+
+            <!-- Time Saved -->
+            <div class="bg-[#0ABFB8]/8 border border-[#0ABFB8]/20 rounded-lg px-3 py-2 mb-3">
+              <p class="text-[#0ABFB8] text-xs font-bold">Saves approx. {tool.time_saved}</p>
+            </div>
+
+            <!-- Meta Row -->
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs text-gray-400 bg-gray-50 px-2 py-1 rounded font-medium">{tool.category}</span>
+              <span class="text-xs font-bold text-amber-500">&#9733; {tool.rating} ({(tool.reviews/1000).toFixed(1)}k)</span>
+            </div>
+
+            <!-- Badges -->
+            <div class="flex gap-1.5 mb-4">
+              {tool.msme_verified && (
+                <span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-semibold">MSME Verified</span>
+              )}
+              {tool.africa_ready && (
+                <span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-semibold">Africa Ready</span>
+              )}
+            </div>
+
+            <!-- Pricing + CTA -->
+            <div class="border-t border-gray-100 pt-3 mt-auto">
+              <p class="text-xs text-gray-500 mb-3 font-medium">{tool.pricing}</p>
+              <a href={"/tools/" + tool.slug} class="block w-full text-center bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white text-sm font-bold py-2.5 rounded-lg transition-colors">View Tool</a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Empty state -->
+      <div id="no-results" class="hidden text-center py-16">
+        <p class="text-gray-400 text-lg font-medium mb-2">No tools found</p>
+        <p class="text-gray-400 text-sm">Try a different search term or category</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TRUST SECTION -->
+  <section class="py-14 bg-white border-t border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-2xl font-bold text-[#1A2F4E] mb-3">How We Review Tools</h2>
+      <p class="text-gray-500 mb-10 max-w-2xl mx-auto">
+        Every tool on Aheri Systems is evaluated against the same four criteria. We test tools ourselves before recommending them.
+      </p>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {[
+          { label: "Ease of Use", score: "25%", desc: "Can a non-technical business owner set it up in one afternoon?" },
+          { label: "Value for Money", score: "25%", desc: "Does the ROI justify the cost for a lean business?" },
+          { label: "MSME Suitability", score: "25%", desc: "Built for small teams, not enterprise with IT departments?" },
+          { label: "Reliability", score: "25%", desc: "Does it work consistently without constant maintenance?" },
+        ].map((item) => (
+          <div class="text-center">
+            <div class="w-14 h-14 bg-[#1A2F4E] rounded-full flex items-center justify-center text-[#0ABFB8] font-extrabold text-sm mx-auto mb-3">{item.score}</div>
+            <h3 class="font-bold text-[#1A2F4E] text-sm mb-1">{item.label}</h3>
+            <p class="text-gray-400 text-xs leading-relaxed">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+      <p class="text-gray-400 text-xs mt-8">
+        Some links on this page are affiliate links. This helps keep Aheri Systems free.
+        <a href="/disclosure" class="text-[#0ABFB8] hover:underline ml-1">Read our disclosure policy.</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-14 bg-[#1A2F4E]">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-white mb-3">Your tool is not here yet?</h2>
+      <p class="text-gray-300 mb-6">Submit it to the directory. Free listings take 48 hours. Premium featured listings go live immediately.</p>
+      <a href="/submit" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold px-8 py-4 rounded-xl transition-colors">
+        Submit a Tool Free &rarr;
+      </a>
+    </div>
+  </section>
+
+</Layout>
+
+<script>
+  // Category filter
+  const filterBtns = document.querySelectorAll(".category-filter");
+  const toolCards = document.querySelectorAll(".tool-card");
+  const resultsCount = document.getElementById("results-count");
+  const noResults = document.getElementById("no-results");
+  const searchInput = document.getElementById("tool-search");
+  let activeCategory = "All";
+  let searchTerm = "";
+
+  function filterTools() {
+    let visible = 0;
+    toolCards.forEach(function(card) {
+      const category = card.getAttribute("data-category") || "";
+      const name = card.getAttribute("data-name") || "";
+      const matchesCategory = activeCategory === "All" || category === activeCategory;
+      const matchesSearch = searchTerm === "" || name.includes(searchTerm.toLowerCase());
+      if (matchesCategory && matchesSearch) {
+        card.classList.remove("hidden");
+        visible++;
+      } else {
+        card.classList.add("hidden");
+      }
+    });
+    if (resultsCount) resultsCount.textContent = String(visible);
+    if (noResults) {
+      if (visible === 0) noResults.classList.remove("hidden");
+      else noResults.classList.add("hidden");
+    }
+  }
+
+  filterBtns.forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      activeCategory = btn.getAttribute("data-category") || "All";
+      filterBtns.forEach(function(b) {
+        b.classList.remove("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+        b.classList.add("bg-white", "text-gray-600", "border-gray-200");
+      });
+      btn.classList.remove("bg-white", "text-gray-600", "border-gray-200");
+      btn.classList.add("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+      filterTools();
+    });
+  });
+
+  if (searchInput) {
+    searchInput.addEventListener("input", function() {
+      searchTerm = searchInput.value;
+      filterTools();
+    });
+  }
+</script>
