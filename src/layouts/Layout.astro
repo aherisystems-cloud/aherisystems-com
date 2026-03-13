@@ -1,0 +1,106 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "The platform to run your business smarter with automation and AI. Save time, save money, make money." } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title} | Aheri Systems</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-white text-gray-900 font-sans antialiased">
+
+    <!-- NAVIGATION -->
+    <header class="bg-[#1A2F4E] border-b border-[#0ABFB8]/20 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+
+          <!-- Logo -->
+          <a href="/" class="flex items-center">
+            <img src="/logo.png" alt="Aheri Systems" class="h-9 w-auto" />
+          </a>
+
+          <!-- Nav Links -->
+          <nav class="hidden md:flex items-center gap-6">
+            <a href="/tools" class="text-gray-300 hover:text-[#0ABFB8] text-sm font-medium transition-colors">Tools</a>
+            <a href="/systems" class="text-gray-300 hover:text-[#0ABFB8] text-sm font-medium transition-colors">Systems</a>
+            <a href="/templates" class="text-gray-300 hover:text-[#0ABFB8] text-sm font-medium transition-colors">Templates</a>
+            <a href="/compare" class="text-gray-300 hover:text-[#0ABFB8] text-sm font-medium transition-colors">Compare</a>
+            <a href="/deals" class="text-gray-300 hover:text-[#0ABFB8] text-sm font-medium transition-colors">Deals</a>
+          </nav>
+
+          <!-- CTA -->
+          <a href="/submit" class="bg-[#0ABFB8] hover:bg-[#09A8A2] text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+            Submit a Tool
+          </a>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main>
+      <slot />
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-[#1A2F4E] border-t border-[#0ABFB8]/20 mt-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+
+          <div class="col-span-1 md:col-span-2">
+            <img src="/logo.png" alt="Aheri Systems" class="h-8 w-auto mb-3" />
+            <p class="text-gray-400 text-sm max-w-xs">The platform to run your business smarter with automation and AI.</p>
+            <div class="flex gap-4 mt-3">
+              <span class="text-[#0ABFB8] text-xs font-semibold">Save Time</span>
+              <span class="text-[#0ABFB8] text-xs font-semibold">Save Money</span>
+              <span class="text-[#0ABFB8] text-xs font-semibold">Make Money</span>
+            </div>
+            <p class="text-gray-500 text-xs mt-4">Built by <a href="https://ritandubi.com" class="text-[#0ABFB8] hover:text-[#09A8A2]">Rit Andubi</a></p>
+          </div>
+
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-3">Platform</h3>
+            <ul class="space-y-2">
+              <li><a href="/tools" class="text-gray-400 hover:text-white text-sm transition-colors">Tools Directory</a></li>
+              <li><a href="/systems" class="text-gray-400 hover:text-white text-sm transition-colors">Systems Library</a></li>
+              <li><a href="/templates" class="text-gray-400 hover:text-white text-sm transition-colors">Templates</a></li>
+              <li><a href="/compare" class="text-gray-400 hover:text-white text-sm transition-colors">Comparisons</a></li>
+              <li><a href="/deals" class="text-gray-400 hover:text-white text-sm transition-colors">Deals</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-white font-semibold text-sm mb-3">Company</h3>
+            <ul class="space-y-2">
+              <li><a href="/about" class="text-gray-400 hover:text-white text-sm transition-colors">About</a></li>
+              <li><a href="/submit" class="text-gray-400 hover:text-white text-sm transition-colors">Submit a Tool</a></li>
+              <li><a href="/advertise" class="text-gray-400 hover:text-white text-sm transition-colors">Advertise</a></li>
+              <li><a href="https://ritandubi.com" class="text-gray-400 hover:text-white text-sm transition-colors">ritandubi.com</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <div class="border-t border-[#0ABFB8]/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-gray-500 text-xs">&copy; 2025 Aheri Systems. All rights reserved.</p>
+          <p class="text-gray-500 text-xs">Some links on this site are affiliate links. <a href="/disclosure" class="text-[#0ABFB8] hover:text-[#09A8A2]">Disclosure</a></p>
+        </div>
+      </div>
+    </footer>
+
+  </body>
+</html>
