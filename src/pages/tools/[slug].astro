@@ -1,0 +1,501 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
+import tools from "../../data/tools.js";
+
+export async function getStaticPaths() {
+  return tools.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": tool.name,
+  "description": tool.description,
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "description": tool.pricing },
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": tool.rating, "reviewCount": tool.reviews, "bestRating": "5", "worstRating": "1" },
+  "publisher": { "@type": "Organization", "name": "Aheri Systems", "url": "https://aherisystems.com" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Is " + tool.name + " free?", "acceptedAnswer": { "@type": "Answer", "text": tool.name + " offers a free plan. Paid plans start from " + (tool.pricing_detail[1]?.price || "see pricing") + "." } },
+    { "@type": "Question", "name": "Who is " + tool.name + " best for?", "acceptedAnswer": { "@type": "Answer", "text": tool.best_for.join(", ") } },
+    { "@type": "Question", "name": "How much time can " + tool.name + " save my business?", "acceptedAnswer": { "@type": "Answer", "text": "Based on our research, " + tool.name + " saves businesses approximately " + tool.time_saved + " on average." } }
+  ]
+};
+
+const outcomes = [
+  {
+    label: "Save Time",
+    color: "#0ABFB8",
+    bg: "bg-[#0ABFB8]",
+    lightBg: "bg-[#0ABFB8]/10",
+    border: "border-[#0ABFB8]/30",
+    icon: "&#9200;",
+    data: tool.outcomes.save_time,
+  },
+  {
+    label: "Save Money",
+    color: "#059669",
+    bg: "bg-[#059669]",
+    lightBg: "bg-[#059669]/10",
+    border: "border-[#059669]/30",
+    icon: "&#128176;",
+    data: tool.outcomes.save_money,
+  },
+  {
+    label: "Make Money",
+    color: "#D97706",
+    bg: "bg-[#D97706]",
+    lightBg: "bg-[#D97706]/10",
+    border: "border-[#D97706]/30",
+    icon: "&#128200;",
+    data: tool.outcomes.make_money,
+  },
+];
+
+const deals = [
+  { name: "Zapier", offer: "Free plan — 5 Zaps forever", slug: "zapier", color: "#FF4F00" },
+  { name: "Make", offer: "Free plan — 1,000 ops/month", slug: "make", color: "#6D00CC" },
+  { name: "Notion", offer: "Free forever for individuals", slug: "notion", color: "#000000" },
+  { name: "HubSpot", offer: "Free CRM — no time limit", slug: "hubspot", color: "#FF7A59" },
+  { name: "ClickUp", offer: "Free plan — unlimited tasks", slug: "clickup", color: "#7C3AED" },
+];
+---
+
+<Layout
+  title={tool.name + " Review — Is It Worth It for Your Business?"}
+  description={"Honest " + tool.name + " review for MSMEs and solo entrepreneurs. Pricing, pros, cons, and who it is really for. Save " + tool.time_saved + " with " + tool.name + "."}
+>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/tools" class="hover:text-[#0ABFB8] transition-colors">Tools</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">{tool.name}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- TOOL HERO -->
+  <section class="bg-white border-b border-gray-100 py-10">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <!-- Top row: logo + name + CTA -->
+      <div class="flex flex-col lg:flex-row items-start gap-8 mb-8">
+
+        <!-- Left -->
+        <div class="flex-1">
+          <div class="flex items-start gap-4 mb-5">
+            <div class="w-16 h-16 bg-[#1A2F4E] rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl flex-shrink-0">
+              {tool.name[0]}
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <h1 class="text-3xl font-extrabold text-[#1A2F4E]">{tool.name}</h1>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={"background-color: " + tool.badgeColor}>{tool.badge}</span>
+              </div>
+              <p class="text-gray-500 text-base">{tool.tagline}</p>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4 mb-5">
+            <div class="flex items-center gap-1">
+              {[1,2,3,4,5].map((star) => (
+                <span class={star <= Math.round(tool.rating) ? "text-amber-400 text-lg" : "text-gray-200 text-lg"}>&#9733;</span>
+              ))}
+              <span class="text-gray-700 font-bold text-sm ml-1">{tool.rating}</span>
+              <span class="text-gray-400 text-sm">({tool.reviews.toLocaleString()} reviews)</span>
+            </div>
+            <span class="text-gray-300">|</span>
+            <span class="text-sm text-gray-500">{tool.category}</span>
+            <span class="text-gray-300">|</span>
+            <span class="text-sm text-gray-500">{tool.users} users</span>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            {tool.msme_verified && <span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1.5 rounded-full font-semibold">MSME Verified</span>}
+            {tool.africa_ready && <span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-3 py-1.5 rounded-full font-semibold">Africa Ready</span>}
+            <span class="text-xs bg-green-50 text-green-700 border border-green-200 px-3 py-1.5 rounded-full font-semibold">Free Plan Available</span>
+            <span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-3 py-1.5 rounded-full font-semibold">Founded {tool.founded}</span>
+          </div>
+        </div>
+
+        <!-- Right: CTA Card -->
+        <div class="w-full lg:w-72 bg-white border-2 border-[#0ABFB8] rounded-2xl p-5 shadow-lg flex-shrink-0">
+          <div class="text-center mb-4">
+            <p class="text-gray-400 text-xs font-medium mb-1">Starting from</p>
+            <p class="text-[#1A2F4E] font-extrabold text-3xl">{tool.pricing_detail[0].price}</p>
+            <p class="text-gray-400 text-xs mt-1">{tool.pricing_detail[0].features}</p>
+          </div>
+          <div class="space-y-2 mb-3">
+            <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block w-full text-center bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold py-3.5 rounded-xl transition-colors">Try {tool.name} Free</a>
+            <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block w-full text-center bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold py-3 rounded-xl transition-colors text-sm">View Pricing Plans</a>
+          </div>
+          <p class="text-center text-gray-400 text-xs">Affiliate link — commission earned at no extra cost to you.</p>
+        </div>
+      </div>
+
+      <!-- OUTCOME SCORES — full width -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {outcomes.map((o) => (
+          <div class={`rounded-xl border p-5 ${o.lightBg} ${o.border}`}>
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-2">
+                <span class="text-xl" set:html={o.icon}></span>
+                <span class="text-sm font-extrabold text-gray-700 uppercase tracking-wide">{o.label}</span>
+              </div>
+              <span class="text-sm font-extrabold" style={"color: " + o.color}>{o.data.metric}</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+              <div class={"h-2 rounded-full " + o.bg} style={"width: " + (o.data.score * 10) + "%"}></div>
+            </div>
+            <p class="text-xs text-gray-600 leading-relaxed">{o.data.detail}</p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DEALS STRIP -->
+  <section class="bg-[#1A2F4E] border-b border-white/10 py-4">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center gap-4 overflow-x-auto pb-1">
+        <span class="text-[#0ABFB8] text-xs font-bold tracking-widest uppercase whitespace-nowrap flex-shrink-0">Current Deals</span>
+        <div class="flex items-center gap-3">
+          {deals.map((deal) => (
+            
+              <a href={"/tools/" + deal.slug} class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#0ABFB8]/40 rounded-lg px-3 py-2 transition-all flex-shrink-0 group">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-white text-xs font-extrabold flex-shrink-0" style={"background-color: " + deal.color}>{deal.name[0]}</span>
+              <div>
+                <p class="text-white text-xs font-bold group-hover:text-[#0ABFB8] transition-colors">{deal.name}</p>
+                <p class="text-gray-400 text-xs">{deal.offer}</p>
+              </div>
+            </a>
+          ))}
+          <a href="/deals" class="text-[#0ABFB8] text-xs font-semibold whitespace-nowrap hover:underline flex-shrink-0 ml-2">View all deals</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT — full width single column -->
+  <div class="max-w-5xl mx-auto px-4 py-12">
+
+    <!-- THE PROBLEM -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-4">The Problem {tool.name} Solves</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-red-50 border-l-4 border-red-400 rounded-r-xl px-6 py-5">
+          <p class="text-xs font-bold text-red-500 uppercase tracking-wide mb-2">The Pain</p>
+          <p class="text-gray-700 leading-relaxed font-medium">{tool.problem}</p>
+        </div>
+        <div class="bg-green-50 border-l-4 border-[#0ABFB8] rounded-r-xl px-6 py-5">
+          <p class="text-xs font-bold text-[#0ABFB8] uppercase tracking-wide mb-2">The Fix</p>
+          <p class="text-gray-700 leading-relaxed font-medium">{tool.solution}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT IS IT -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-4">What is {tool.name}?</h2>
+      <p class="text-gray-600 leading-relaxed text-base">{tool.description}</p>
+    </section>
+
+    <!-- PROS & CONS -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Pros and Cons</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-green-50 border border-green-100 rounded-xl p-5">
+          <h3 class="font-bold text-green-700 mb-4 flex items-center gap-2">
+            <span class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold">+</span>
+            What We Love
+          </h3>
+          <ul class="space-y-3">
+            {tool.pros.map((pro) => (
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-green-500 font-bold mt-0.5 flex-shrink-0">✓</span>
+                {pro}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="bg-red-50 border border-red-100 rounded-xl p-5">
+          <h3 class="font-bold text-red-700 mb-4 flex items-center gap-2">
+            <span class="w-6 h-6 bg-red-400 rounded-full flex items-center justify-center text-white text-xs font-bold">-</span>
+            Watch Out For
+          </h3>
+          <ul class="space-y-3">
+            {tool.cons.map((con) => (
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-red-400 font-bold mt-0.5 flex-shrink-0">!</span>
+                {con}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- USE CASES -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">What Can You Do With {tool.name}?</h2>
+      <p class="text-gray-500 mb-5 text-sm">Real use cases from MSME owners and solo entrepreneurs:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {tool.use_cases.map((useCase) => (
+          <div class="flex items-start gap-3 bg-gray-50 border border-gray-100 rounded-lg px-4 py-3">
+            <span class="w-5 h-5 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 mt-0.5">✓</span>
+            <span class="text-gray-700 text-sm">{useCase}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- WHO IT IS FOR -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Who Is {tool.name} For?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <h3 class="font-bold text-[#1A2F4E] mb-3 text-sm uppercase tracking-wide">Best For</h3>
+          <ul class="space-y-2">
+            {tool.best_for.map((item) => (
+              <li class="flex items-center gap-2 text-sm text-gray-700">
+                <span class="text-[#0ABFB8] font-bold">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <h3 class="font-bold text-[#1A2F4E] mb-3 text-sm uppercase tracking-wide">Not Ideal For</h3>
+          <ul class="space-y-2">
+            {tool.not_for.map((item) => (
+              <li class="flex items-center gap-2 text-sm text-gray-700">
+                <span class="text-red-400 font-bold">✗</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUICK FACTS + ALTERNATIVES — two col inline -->
+    <section class="mb-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
+          <h3 class="font-bold text-[#1A2F4E] text-sm mb-4 uppercase tracking-wide">Quick Facts</h3>
+          <div class="space-y-3">
+            {[
+              { label: "Category", value: tool.category },
+              { label: "Pricing", value: tool.pricing },
+              { label: "Free Plan", value: "Yes" },
+              { label: "Time Saved", value: tool.time_saved },
+              { label: "Founded", value: tool.founded },
+              { label: "HQ", value: tool.hq },
+              { label: "Users", value: tool.users },
+            ].map((fact) => (
+              <div class="flex justify-between items-start gap-2 border-b border-gray-100 pb-2 last:border-0 last:pb-0">
+                <span class="text-gray-400 text-xs">{fact.label}</span>
+                <span class="text-gray-700 text-xs font-semibold text-right">{fact.value}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="bg-white border border-gray-200 rounded-xl p-5">
+          <h3 class="font-bold text-[#1A2F4E] text-sm mb-4 uppercase tracking-wide">Alternatives to {tool.name}</h3>
+          <div class="space-y-2 mb-4">
+            {tool.alternatives.map((alt) => (
+              <a href={"/tools/" + alt} class="flex items-center justify-between py-2.5 px-3 bg-gray-50 hover:bg-[#0ABFB8]/5 border border-gray-100 hover:border-[#0ABFB8]/30 rounded-lg group transition-all">
+                <span class="text-sm text-gray-700 group-hover:text-[#0ABFB8] font-medium capitalize transition-colors">{alt}</span>
+                <span class="text-xs text-gray-400 group-hover:text-[#0ABFB8] transition-colors">View review</span>
+              </a>
+            ))}
+          </div>
+          <a href="/compare" class="block w-full text-center border border-[#0ABFB8] text-[#0ABFB8] hover:bg-[#0ABFB8] hover:text-white font-semibold py-2.5 rounded-lg transition-colors text-sm">
+            Compare tools side by side
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">{tool.name} Pricing</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        {tool.pricing_detail.map((plan, i) => (
+          <div class={"border rounded-xl p-5 " + (i === 0 ? "border-[#0ABFB8] bg-[#0ABFB8]/5" : "border-gray-200 bg-white")}>
+            <p class="font-bold text-[#1A2F4E] mb-1">{plan.plan}</p>
+            <p class={"text-2xl font-extrabold mb-3 " + (i === 0 ? "text-[#0ABFB8]" : "text-[#1A2F4E]")}>{plan.price}</p>
+            <p class="text-gray-500 text-xs leading-relaxed">{plan.features}</p>
+          </div>
+        ))}
+      </div>
+      <div class="text-center">
+        <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold px-10 py-4 rounded-xl transition-colors">Start Free — No Credit Card Required</a>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER — mid content -->
+    <section class="mb-12">
+      <NewsletterSignup variant="light" />
+    </section>
+
+    <!-- FAQ -->
+    <section class="mb-12">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        {[
+          { q: "Is " + tool.name + " free?", a: "Yes. " + tool.name + " has a free plan that is genuinely useful for getting started. " + tool.pricing_detail[0].features + ". Paid plans start from " + (tool.pricing_detail[1]?.price || "see pricing") + "." },
+          { q: "Who is " + tool.name + " best for?", a: tool.name + " is best for " + tool.best_for.slice(0, 3).join(", ") + ". It is particularly well suited for MSMEs and solo entrepreneurs who want to save time without hiring extra staff." },
+          { q: "How much time will " + tool.name + " save my business?", a: "Based on our research with MSME users, " + tool.name + " saves approximately " + tool.time_saved + " on average. Results vary depending on how many automations you build." },
+          { q: "Is " + tool.name + " available in Africa?", a: tool.africa_ready ? "Yes. " + tool.name + " works in Africa and supports international payment methods. It is one of our Africa Ready certified tools." : tool.name + " has some limitations for African users. Check the pricing page for payment options available in your country." },
+        ].map((faq) => (
+          <div class="border border-gray-200 rounded-xl overflow-hidden">
+            <details class="group">
+              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-[#1A2F4E] text-sm hover:bg-gray-50 transition-colors">
+                {faq.q}
+                <span class="text-[#0ABFB8] text-lg font-bold ml-4 flex-shrink-0">+</span>
+              </summary>
+              <div class="px-5 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                {faq.a}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- RELATED GUIDES -->
+    {tool.guides && tool.guides.length > 0 && (
+      <section class="mb-12">
+        <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">Learn More — {tool.name} Guides</h2>
+        <p class="text-gray-500 text-sm mb-5">Step-by-step Automation & AI guides to get the most out of {tool.name}:</p>
+        <div class="space-y-3">
+          {tool.guides.map((guide) => (
+            <a href={"/guides/" + guide.slug} class="flex items-center justify-between bg-gray-50 border border-gray-200 hover:border-[#0ABFB8] rounded-xl px-5 py-4 transition-all group">
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-8 bg-[#1A2F4E] group-hover:bg-[#0ABFB8] rounded-lg flex items-center justify-center text-[#0ABFB8] group-hover:text-white text-sm font-bold flex-shrink-0 transition-colors">&#9654;</span>
+                <span class="text-gray-700 group-hover:text-[#0ABFB8] font-medium text-sm transition-colors">{guide.title}</span>
+              </div>
+              <span class="text-gray-300 group-hover:text-[#0ABFB8] text-xs font-semibold flex-shrink-0 ml-4 transition-colors">Read Guide</span>
+            </a>
+          ))}
+        </div>
+        <div class="mt-5 text-center">
+          <a href="/guides" class="inline-block border border-[#0ABFB8] text-[#0ABFB8] hover:bg-[#0ABFB8] hover:text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm">View all Automation & AI guides</a>
+        </div>
+      </section>
+    )}
+
+  </div>
+
+  <!-- DONE FOR YOU SETUP -->
+  <section class="py-14 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-2xl mx-auto px-4">
+      <div class="text-center mb-8">
+        <span class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase">Done-For-You Setup</span>
+        <h2 class="text-2xl font-extrabold text-[#1A2F4E] mt-2 mb-2">Want this set up without touching a single setting?</h2>
+        <p class="text-gray-500 text-sm max-w-lg mx-auto">Tell us what you need. Our Automation & AI specialists set it up for you — properly, the first time. You get back to running your business.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mb-8 text-center">
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">24hrs</p>
+          <p class="text-gray-500 text-xs">Response time</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">Fixed</p>
+          <p class="text-gray-500 text-xs">Upfront pricing</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">0 Risk</p>
+          <p class="text-gray-500 text-xs">No commitment</p>
+        </div>
+      </div>
+
+      <form
+        action="https://formspree.io/f/mkoqzqpk"
+        method="POST"
+        class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4"
+      >
+        <input type="hidden" name="tool" value={tool.name} />
+        <input type="hidden" name="source" value={"Tool Review: " + tool.name} />
+        <input type="hidden" name="_next" value="https://aherisystems.com/thank-you" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Your Name</label>
+            <input type="text" name="name" required placeholder="Jane Mwangi" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email Address</label>
+            <input type="email" name="email" required placeholder="jane@yourbusiness.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">What do you want to automate or set up?</label>
+          <textarea name="message" required rows="3" placeholder={"Tell us what you want to achieve with " + tool.name + ". The more specific, the better."} class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8] resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Monthly budget for this setup</label>
+          <select name="budget" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]">
+            <option value="">Select a range</option>
+            <option>Under $100</option>
+            <option>$100 - $300</option>
+            <option>$300 - $500</option>
+            <option>$500 - $1,000</option>
+            <option>$1,000+</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-extrabold py-3.5 rounded-xl transition-colors text-sm">
+          Send Request — We Respond Within 24 Hours
+        </button>
+        <p class="text-center text-gray-400 text-xs">No commitment required. Just a conversation about what you need.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER STRIP -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup variant="teal" />
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-14 bg-[#1A2F4E]">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-white mb-3">Ready to save {tool.time_saved} every week?</h2>
+      <p class="text-gray-300 mb-6">Start with {tool.name}'s free plan today. No credit card. No risk. Your first Automation & AI workflow running in under 30 minutes.</p>
+      <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold px-10 py-4 rounded-xl transition-colors text-base">Get Started with {tool.name} Free</a>
+      <p class="text-gray-500 text-xs mt-4">Affiliate link — we earn a commission at no extra cost to you</p>
+    </div>
+  </section>
+
+</Layout>

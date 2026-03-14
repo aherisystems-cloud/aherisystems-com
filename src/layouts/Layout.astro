@@ -1,12 +1,12 @@
 ---
-import "../styles/global.css";
+import '../styles/global.css';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = "The platform to run your business smarter with automation and AI. Save time, save money, make money." } = Astro.props;
+const { title, description = 'The platform to run your business smarter with automation and AI. Save time, save money, make money.' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -21,6 +21,14 @@ const { title, description = "The platform to run your business smarter with aut
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+   <script defer src="https://assets.mailerlite.com/js/universal.js"></script>
+    <script is:inline>
+      window.addEventListener('load', function() {
+        if (typeof ml !== 'undefined') {
+          ml('account', '2189648');
+        }
+      });
+    </script>
   </head>
   <body class="bg-white text-gray-900 font-sans antialiased">
 
