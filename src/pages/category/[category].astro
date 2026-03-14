@@ -1,0 +1,315 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
+import tools from "../../data/tools.js";
+
+export async function getStaticPaths() {
+  const categories = [...new Set(tools.map((t) => t.category))];
+  return categories.map((category) => ({
+    params: { category: category.toLowerCase().replace(/ /g, "-").replace(/&/g, "") },
+    props: { category, tools: tools.filter((t) => t.category === category) },
+  }));
+}
+
+const { category, tools: categoryTools } = Astro.props;
+const { category: slug } = Astro.params;
+
+const categoryMeta = {
+  "automation": {
+    headline: "Automation tools that eliminate the manual work eating your day",
+    sub: "Every tool in this category connects your apps, runs your workflows, and does the repetitive work your business should never require a human to do.",
+    icon: "&#9889;",
+    color: "#0ABFB8",
+  },
+  "ai-tools": {
+    headline: "AI tools that do the thinking so you can do the leading",
+    sub: "Write faster, decide smarter, serve better. These AI tools give solo entrepreneurs and MSMEs capabilities that used to require a full team.",
+    icon: "&#129302;",
+    color: "#7C3AED",
+  },
+  "crm-sales": {
+    headline: "CRM and sales tools that close more deals with less chasing",
+    sub: "Stop losing leads in spreadsheets. These tools track every prospect, log every interaction, and make sure no deal ever falls through a crack again.",
+    icon: "&#128188;",
+    color: "#0052CC",
+  },
+  "email-marketing": {
+    headline: "Email marketing tools that grow your list and sell while you sleep",
+    sub: "Your email list is the only audience you truly own. These tools help you build it, nurture it, and turn it into consistent revenue on autopilot.",
+    icon: "&#9993;",
+    color: "#059669",
+  },
+  "project-management": {
+    headline: "Project management tools that keep your team on track without the meetings",
+    sub: "Missed deadlines and lost tasks cost MSMEs thousands every year. These tools fix that by giving every person, project and deadline one home.",
+    icon: "&#128203;",
+    color: "#D97706",
+  },
+  "finance-invoicing": {
+    headline: "Finance and invoicing tools that get you paid faster",
+    sub: "Professional invoices, automatic reminders, and clean accounting reports. These tools handle your finances so you can focus on earning more.",
+    icon: "&#128176;",
+    color: "#DC2626",
+  },
+  "content-creation": {
+    headline: "Content creation tools that produce more in less time",
+    sub: "Content is how your business gets found. These Automation and AI tools help you create, repurpose and publish faster than any human team could alone.",
+    icon: "&#9997;",
+    color: "#7C3AED",
+  },
+  "social-media": {
+    headline: "Social media tools that keep you consistent without the daily grind",
+    sub: "Inconsistent posting kills reach. These tools let you plan a week of content in one sitting and publish it automatically at the right time.",
+    icon: "&#128241;",
+    color: "#0891B2",
+  },
+};
+
+const meta = categoryMeta[slug] || {
+  headline: category + " tools for MSMEs and solo entrepreneurs",
+  sub: "Find the right " + category + " tool for your business. Every listing is reviewed and verified.",
+  icon: "&#9889;",
+  color: "#0ABFB8",
+};
+
+const relatedCategories = Object.entries(categoryMeta)
+  .filter(([key]) => key !== slug)
+  .slice(0, 4);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": category + " Tools for Small Business",
+  "description": meta.sub,
+  "url": "https://aherisystems.com/category/" + slug,
+  "publisher": { "@type": "Organization", "name": "Aheri Systems", "url": "https://aherisystems.com" }
+};
+---
+
+<Layout
+  title={category + " Tools — Best " + category + " Software for MSMEs"}
+  description={meta.sub}
+>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/tools" class="hover:text-[#0ABFB8] transition-colors">Tools</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">{category}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-start gap-5 mb-6">
+        <div class="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0" style={"background-color: " + meta.color + "20; border: 2px solid " + meta.color + "40"}>
+          <span set:html={meta.icon}></span>
+        </div>
+        <div>
+          <p class="text-xs font-bold tracking-widest uppercase mb-2" style={"color: " + meta.color}>{category}</p>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight">{meta.headline}</h1>
+        </div>
+      </div>
+      <p class="text-gray-300 text-lg max-w-3xl mb-8">{meta.sub}</p>
+      <div class="flex flex-wrap items-center gap-4">
+        <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+          <span class="font-extrabold text-white">{categoryTools.length}</span>
+          <span class="text-gray-400 text-sm">tools reviewed</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+          <span class="font-extrabold text-white">{categoryTools.filter((t) => t.msme_verified).length}</span>
+          <span class="text-gray-400 text-sm">MSME Verified</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+          <span class="font-extrabold text-white">{categoryTools.filter((t) => t.africa_ready).length}</span>
+          <span class="text-gray-400 text-sm">Africa Ready</span>
+        </div>
+        <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+          <span class="font-extrabold text-white">{categoryTools.filter((t) => t.pricing_type === "Freemium" || t.pricing_type === "Free").length}</span>
+          <span class="text-gray-400 text-sm">with free plans</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTCOME FILTER STRIP -->
+  <section class="bg-white border-b border-gray-100 py-3 sticky top-16 z-40">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center gap-3 overflow-x-auto">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap flex-shrink-0">Filter by:</span>
+        <button class="outcome-filter active-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-[#1A2F4E] text-white border-[#1A2F4E]" data-filter="all">All Tools</button>
+        <button class="outcome-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-white text-gray-600 border-gray-200 hover:border-[#0ABFB8] hover:text-[#0ABFB8]" data-filter="save-time">Save Time</button>
+        <button class="outcome-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-white text-gray-600 border-gray-200 hover:border-[#059669] hover:text-[#059669]" data-filter="save-money">Save Money</button>
+        <button class="outcome-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-white text-gray-600 border-gray-200 hover:border-[#D97706] hover:text-[#D97706]" data-filter="make-money">Make Money</button>
+        <button class="outcome-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-white text-gray-600 border-gray-200 hover:border-amber-500 hover:text-amber-500" data-filter="africa-ready">Africa Ready</button>
+        <button class="outcome-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors bg-white text-gray-600 border-gray-200 hover:border-green-600 hover:text-green-600" data-filter="free">Free Plan</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS GRID -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <div class="flex items-center justify-between mb-6">
+        <p class="text-gray-500 text-sm">
+          Showing <span id="cat-count" class="font-bold text-[#1A2F4E]">{categoryTools.length}</span> tools in {category}
+        </p>
+        <a href="/tools" class="text-[#0ABFB8] text-sm font-semibold hover:underline">View all categories</a>
+      </div>
+
+      <div id="cat-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {categoryTools.map((tool) => (
+          <div
+            class="tool-card bg-white border border-gray-200 rounded-xl p-5 hover:border-[#0ABFB8] hover:shadow-lg transition-all flex flex-col"
+            data-save-time={tool.outcomes.save_time.score >= 7 ? "true" : "false"}
+            data-save-money={tool.outcomes.save_money.score >= 7 ? "true" : "false"}
+            data-make-money={tool.outcomes.make_money.score >= 7 ? "true" : "false"}
+            data-africa-ready={tool.africa_ready ? "true" : "false"}
+            data-free={tool.pricing_type === "Freemium" || tool.pricing_type === "Free" ? "true" : "false"}
+          >
+            <!-- Header -->
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-11 h-11 bg-[#1A2F4E] rounded-xl flex items-center justify-center text-white font-extrabold text-lg flex-shrink-0">
+                {tool.name[0]}
+              </div>
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={"background-color: " + tool.badgeColor}>
+                {tool.badge}
+              </span>
+            </div>
+
+            <!-- Info -->
+            <h2 class="font-bold text-[#1A2F4E] text-base mb-1">{tool.name}</h2>
+            <p class="text-gray-500 text-xs leading-relaxed mb-3 flex-1">{tool.tagline}</p>
+
+            <!-- Outcome mini bars -->
+            <div class="space-y-1.5 mb-3">
+              {[
+                { label: "Save Time", score: tool.outcomes.save_time.score, metric: tool.outcomes.save_time.metric, color: "#0ABFB8" },
+                { label: "Save Money", score: tool.outcomes.save_money.score, metric: tool.outcomes.save_money.metric, color: "#059669" },
+                { label: "Make Money", score: tool.outcomes.make_money.score, metric: tool.outcomes.make_money.metric, color: "#D97706" },
+              ].map((o) => (
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-400 text-xs w-20 flex-shrink-0">{o.label}</span>
+                  <div class="flex-1 bg-gray-100 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full" style={"width: " + (o.score * 10) + "%; background-color: " + o.color}></div>
+                  </div>
+                  <span class="text-xs font-bold flex-shrink-0" style={"color: " + o.color}>{o.metric}</span>
+                </div>
+              ))}
+            </div>
+
+            <!-- Badges -->
+            <div class="flex gap-1.5 mb-4 flex-wrap">
+              {tool.msme_verified && <span class="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-semibold">MSME Verified</span>}
+              {tool.africa_ready && <span class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-semibold">Africa Ready</span>}
+            </div>
+
+            <!-- Footer -->
+            <div class="border-t border-gray-100 pt-3 mt-auto">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs text-gray-500 font-medium">{tool.pricing}</span>
+                <span class="text-xs font-bold text-amber-500">&#9733; {tool.rating}</span>
+              </div>
+              <a href={"/tools/" + tool.slug} class="block w-full text-center bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white text-sm font-bold py-2.5 rounded-lg transition-colors">
+                View Review
+              </a>
+            </div>
+
+          </div>
+        ))}
+      </div>
+
+      <div id="cat-no-results" class="hidden text-center py-16">
+        <p class="text-gray-400 text-lg font-medium mb-2">No tools match this filter</p>
+        <button class="outcome-filter text-[#0ABFB8] text-sm font-semibold hover:underline" data-filter="all">Show all tools</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup variant="teal" />
+    </div>
+  </section>
+
+  <!-- RELATED CATEGORIES -->
+  <section class="py-12 bg-white border-t border-gray-100">
+    <div class="max-w-5xl mx-auto px-4">
+      <h2 class="text-xl font-extrabold text-[#1A2F4E] mb-6">Explore Other Categories</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {relatedCategories.map(([key, data]) => (
+          <a href={"/category/" + key} class="bg-gray-50 border border-gray-200 hover:border-[#0ABFB8] rounded-xl p-4 text-center transition-all group">
+            <div class="text-2xl mb-2" set:html={data.icon}></div>
+            <p class="text-xs font-bold text-gray-700 group-hover:text-[#0ABFB8] transition-colors leading-tight">{key.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-14 bg-[#1A2F4E]">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-white mb-3">Not finding what you need?</h2>
+      <p class="text-gray-300 mb-6">Submit a tool to the Aheri Systems directory. Free listings go live within 48 hours.</p>
+      <a href="/submit" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold px-8 py-4 rounded-xl transition-colors">Submit a Tool Free</a>
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline>
+  (function () {
+    var filterBtns = document.querySelectorAll(".outcome-filter");
+    var cards = document.querySelectorAll(".tool-card");
+    var countEl = document.getElementById("cat-count");
+    var noResults = document.getElementById("cat-no-results");
+    var active = "all";
+
+    function applyFilter() {
+      var visible = 0;
+      cards.forEach(function (card) {
+        var show = false;
+        if (active === "all") show = true;
+        else if (active === "save-time") show = card.getAttribute("data-save-time") === "true";
+        else if (active === "save-money") show = card.getAttribute("data-save-money") === "true";
+        else if (active === "make-money") show = card.getAttribute("data-make-money") === "true";
+        else if (active === "africa-ready") show = card.getAttribute("data-africa-ready") === "true";
+        else if (active === "free") show = card.getAttribute("data-free") === "true";
+
+        if (show) { card.classList.remove("hidden"); visible++; }
+        else card.classList.add("hidden");
+      });
+      if (countEl) countEl.textContent = String(visible);
+      if (noResults) {
+        if (visible === 0) noResults.classList.remove("hidden");
+        else noResults.classList.add("hidden");
+      }
+    }
+
+    filterBtns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        active = btn.getAttribute("data-filter");
+        filterBtns.forEach(function (b) {
+          b.classList.remove("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+          b.classList.add("bg-white", "text-gray-600", "border-gray-200");
+        });
+        btn.classList.remove("bg-white", "text-gray-600", "border-gray-200");
+        btn.classList.add("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+        applyFilter();
+      });
+    });
+  })();
+</script>
+```
