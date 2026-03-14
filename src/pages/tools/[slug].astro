@@ -98,10 +98,8 @@ const deals = [
   <section class="bg-white border-b border-gray-100 py-10">
     <div class="max-w-5xl mx-auto px-4">
 
-      <!-- Top row: logo + name + CTA -->
       <div class="flex flex-col lg:flex-row items-start gap-8 mb-8">
 
-        <!-- Left -->
         <div class="flex-1">
           <div class="flex items-start gap-4 mb-5">
             <div class="w-16 h-16 bg-[#1A2F4E] rounded-2xl flex items-center justify-center text-white font-extrabold text-2xl flex-shrink-0">
@@ -138,7 +136,6 @@ const deals = [
           </div>
         </div>
 
-        <!-- Right: CTA Card -->
         <div class="w-full lg:w-72 bg-white border-2 border-[#0ABFB8] rounded-2xl p-5 shadow-lg flex-shrink-0">
           <div class="text-center mb-4">
             <p class="text-gray-400 text-xs font-medium mb-1">Starting from</p>
@@ -153,7 +150,7 @@ const deals = [
         </div>
       </div>
 
-      <!-- OUTCOME SCORES — full width -->
+      <!-- OUTCOME SCORES -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         {outcomes.map((o) => (
           <div class={`rounded-xl border p-5 ${o.lightBg} ${o.border}`}>
@@ -182,8 +179,7 @@ const deals = [
         <span class="text-[#0ABFB8] text-xs font-bold tracking-widest uppercase whitespace-nowrap flex-shrink-0">Current Deals</span>
         <div class="flex items-center gap-3">
           {deals.map((deal) => (
-            
-              <a href={"/tools/" + deal.slug} class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#0ABFB8]/40 rounded-lg px-3 py-2 transition-all flex-shrink-0 group">
+            <a href={"/tools/" + deal.slug} class="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#0ABFB8]/40 rounded-lg px-3 py-2 transition-all flex-shrink-0 group">
               <span class="w-5 h-5 rounded-md flex items-center justify-center text-white text-xs font-extrabold flex-shrink-0" style={"background-color: " + deal.color}>{deal.name[0]}</span>
               <div>
                 <p class="text-white text-xs font-bold group-hover:text-[#0ABFB8] transition-colors">{deal.name}</p>
@@ -197,7 +193,7 @@ const deals = [
     </div>
   </section>
 
-  <!-- MAIN CONTENT — full width single column -->
+  <!-- MAIN CONTENT -->
   <div class="max-w-5xl mx-auto px-4 py-12">
 
     <!-- THE PROBLEM -->
@@ -299,10 +295,9 @@ const deals = [
       </div>
     </section>
 
-    <!-- QUICK FACTS + ALTERNATIVES — two col inline -->
+    <!-- QUICK FACTS + ALTERNATIVES -->
     <section class="mb-12">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
         <div class="bg-gray-50 border border-gray-200 rounded-xl p-5">
           <h3 class="font-bold text-[#1A2F4E] text-sm mb-4 uppercase tracking-wide">Quick Facts</h3>
           <div class="space-y-3">
@@ -322,7 +317,6 @@ const deals = [
             ))}
           </div>
         </div>
-
         <div class="bg-white border border-gray-200 rounded-xl p-5">
           <h3 class="font-bold text-[#1A2F4E] text-sm mb-4 uppercase tracking-wide">Alternatives to {tool.name}</h3>
           <div class="space-y-2 mb-4">
@@ -337,7 +331,6 @@ const deals = [
             Compare tools side by side
           </a>
         </div>
-
       </div>
     </section>
 
@@ -358,7 +351,7 @@ const deals = [
       </div>
     </section>
 
-    <!-- NEWSLETTER — mid content -->
+    <!-- NEWSLETTER MID -->
     <section class="mb-12">
       <NewsletterSignup variant="light" />
     </section>
@@ -392,7 +385,7 @@ const deals = [
     {tool.guides && tool.guides.length > 0 && (
       <section class="mb-12">
         <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">Learn More — {tool.name} Guides</h2>
-        <p class="text-gray-500 text-sm mb-5">Step-by-step Automation & AI guides to get the most out of {tool.name}:</p>
+        <p class="text-gray-500 text-sm mb-5">Step-by-step Automation and AI guides to get the most out of {tool.name}:</p>
         <div class="space-y-3">
           {tool.guides.map((guide) => (
             <a href={"/guides/" + guide.slug} class="flex items-center justify-between bg-gray-50 border border-gray-200 hover:border-[#0ABFB8] rounded-xl px-5 py-4 transition-all group">
@@ -405,7 +398,7 @@ const deals = [
           ))}
         </div>
         <div class="mt-5 text-center">
-          <a href="/guides" class="inline-block border border-[#0ABFB8] text-[#0ABFB8] hover:bg-[#0ABFB8] hover:text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm">View all Automation & AI guides</a>
+          <a href="/guides" class="inline-block border border-[#0ABFB8] text-[#0ABFB8] hover:bg-[#0ABFB8] hover:text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm">View all Automation and AI guides</a>
         </div>
       </section>
     )}
@@ -418,7 +411,7 @@ const deals = [
       <div class="text-center mb-8">
         <span class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase">Done-For-You Setup</span>
         <h2 class="text-2xl font-extrabold text-[#1A2F4E] mt-2 mb-2">Want this set up without touching a single setting?</h2>
-        <p class="text-gray-500 text-sm max-w-lg mx-auto">Tell us what you need. Our Automation & AI specialists set it up for you — properly, the first time. You get back to running your business.</p>
+        <p class="text-gray-500 text-sm max-w-lg mx-auto">Tell us what you need. Our Automation and AI specialists set it up for you — properly, the first time. You get back to running your business.</p>
       </div>
 
       <div class="grid grid-cols-3 gap-4 mb-8 text-center">
@@ -437,6 +430,7 @@ const deals = [
       </div>
 
       <form
+        id="setup-form"
         action="https://formspree.io/f/mkoqzqpk"
         method="POST"
         class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4"
@@ -492,9 +486,18 @@ const deals = [
   <section class="py-14 bg-[#1A2F4E]">
     <div class="max-w-3xl mx-auto px-4 text-center">
       <h2 class="text-3xl font-bold text-white mb-3">Ready to save {tool.time_saved} every week?</h2>
-      <p class="text-gray-300 mb-6">Start with {tool.name}'s free plan today. No credit card. No risk. Your first Automation & AI workflow running in under 30 minutes.</p>
+      <p class="text-gray-300 mb-6">Start with {tool.name}'s free plan today. No credit card. No risk. Your first Automation and AI workflow running in under 30 minutes.</p>
       <a href={tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold px-10 py-4 rounded-xl transition-colors text-base">Get Started with {tool.name} Free</a>
       <p class="text-gray-500 text-xs mt-4">Affiliate link — we earn a commission at no extra cost to you</p>
+    </div>
+  </section>
+
+  <!-- COMPARISON CTA -->
+  <section class="py-10 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <p class="text-gray-500 text-sm mb-3">Not sure if {tool.name} is the right tool for you?</p>
+      <a href="#setup-form" class="inline-block border border-[#1A2F4E] text-[#1A2F4E] hover:bg-[#1A2F4E] hover:text-white font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm mr-3">Request a Setup Quote</a>
+      <a href="/compare" class="inline-block border border-gray-300 text-gray-600 hover:border-[#0ABFB8] hover:text-[#0ABFB8] font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm">Compare Tools</a>
     </div>
   </section>
 

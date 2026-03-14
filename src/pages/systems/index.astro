@@ -1,0 +1,199 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
+import systems from "../../data/systems.js";
+
+const categories = [...new Set(systems.map((s) => s.category))];
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Business Automation and AI Systems Library",
+  "description": "Ready-to-use business systems that save time, cut costs and grow revenue. Each system includes the tools, workflow, and setup steps.",
+  "url": "https://aherisystems.com/systems",
+  "publisher": { "@type": "Organization", "name": "Aheri Systems", "url": "https://aherisystems.com" }
+};
+---
+
+<Layout
+  title="Business Systems Library — Automation and AI Systems for MSMEs"
+  description="Ready-to-use business systems built with Automation and AI. Each system shows you the exact tools, workflow, and setup steps. Save time, cut costs, grow revenue."
+>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">Systems Library</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase mb-4">Automation and AI Systems Library</p>
+        <h1 class="text-4xl font-extrabold text-white leading-tight mb-4">
+          Stop searching for tools.<br/>Start using systems.
+        </h1>
+        <p class="text-gray-300 text-lg mb-8">
+          Every system here is a complete solution. Not just a tool recommendation. The exact workflow, the tools in the stack, the setup steps, and what it saves you in time and money. Copy it. Implement it. Move on.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-white">{systems.length}</span>
+            <span class="text-gray-400 text-sm">systems ready to use</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-white">$0</span>
+            <span class="text-gray-400 text-sm">to implement most systems</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-white">2hrs</span>
+            <span class="text-gray-400 text-sm">average setup time</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <section class="bg-white border-b border-gray-100 py-3 sticky top-16 z-40">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center gap-3 overflow-x-auto">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap flex-shrink-0">Filter:</span>
+        <button class="sys-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-[#1A2F4E] text-white border-[#1A2F4E] transition-colors" data-filter="all">All Systems</button>
+        {categories.map((cat) => (
+          <button class="sys-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-gray-600 border-gray-200 hover:border-[#0ABFB8] hover:text-[#0ABFB8] transition-colors" data-filter={cat}>{cat}</button>
+        ))}
+        <button class="sys-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-gray-600 border-gray-200 hover:border-green-600 hover:text-green-600 transition-colors" data-filter="beginner">Beginner</button>
+        <button class="sys-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-gray-600 border-gray-200 hover:border-[#0ABFB8] hover:text-[#0ABFB8] transition-colors" data-filter="free">Free to Build</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SYSTEMS GRID -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <p class="text-gray-500 text-sm mb-6">
+        Showing <span id="sys-count" class="font-bold text-[#1A2F4E]">{systems.length}</span> systems
+      </p>
+
+      <div id="sys-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {systems.map((system) => (
+          <div
+            class="sys-card bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#0ABFB8] hover:shadow-lg transition-all flex flex-col"
+            data-category={system.category}
+            data-difficulty={system.difficulty}
+            data-cost={system.total_cost === "$0/month" || system.total_cost === "$0/month on free plans" ? "free" : "paid"}
+          >
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full text-white mb-2 inline-block" style={"background-color: " + system.badgeColor}>{system.badge}</span>
+                <h2 class="font-extrabold text-[#1A2F4E] text-lg leading-tight mt-1">{system.title}</h2>
+              </div>
+            </div>
+
+            <p class="text-gray-500 text-sm mb-4 leading-relaxed flex-1">{system.tagline}</p>
+
+            <div class="space-y-2 mb-4">
+              {[
+                { label: "Save Time", score: system.outcomes.save_time.score, metric: system.outcomes.save_time.metric, color: "#0ABFB8" },
+                { label: "Save Money", score: system.outcomes.save_money.score, metric: system.outcomes.save_money.metric, color: "#059669" },
+                { label: "Make Money", score: system.outcomes.make_money.score, metric: system.outcomes.make_money.metric, color: "#D97706" },
+              ].map((o) => (
+                <div class="flex items-center gap-2">
+                  <span class="text-gray-400 text-xs w-20 flex-shrink-0">{o.label}</span>
+                  <div class="flex-1 bg-gray-100 rounded-full h-1.5">
+                    <div class="h-1.5 rounded-full" style={"width: " + (o.score * 10) + "%; background-color: " + o.color}></div>
+                  </div>
+                  <span class="text-xs font-bold flex-shrink-0" style={"color: " + o.color}>{o.metric}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-5">
+              <span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-1 rounded-full font-medium">{system.category}</span>
+              <span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-1 rounded-full font-medium">{system.difficulty}</span>
+              <span class="text-xs bg-gray-50 text-gray-600 border border-gray-200 px-2.5 py-1 rounded-full font-medium">Setup: {system.setup_time}</span>
+              <span class="text-xs bg-green-50 text-green-700 border border-green-200 px-2.5 py-1 rounded-full font-bold">{system.total_cost}</span>
+            </div>
+
+            <div class="flex items-center gap-2 mb-5">
+              <span class="text-xs text-gray-400">Tools:</span>
+              <div class="flex gap-1">
+                {system.tools.map((t) => (
+                  <span class="w-6 h-6 bg-[#1A2F4E] rounded-md flex items-center justify-center text-white text-xs font-bold">{t.slug[0].toUpperCase()}</span>
+                ))}
+              </div>
+            </div>
+
+            <a href={"/systems/" + system.slug} class="block w-full text-center bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold py-3 rounded-xl transition-colors text-sm">
+              View Full System
+            </a>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup variant="teal" />
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-14 bg-[#1A2F4E]">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <h2 class="text-3xl font-bold text-white mb-3">Need a custom system for your business?</h2>
+      <p class="text-gray-300 mb-6">Tell us your biggest operational pain. Our Automation and AI specialists will design and build the exact system your business needs.</p>
+      <a href="/setup" class="inline-block bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold px-8 py-4 rounded-xl transition-colors">Request a Custom System</a>
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline>
+  (function () {
+    var btns = document.querySelectorAll(".sys-filter");
+    var cards = document.querySelectorAll(".sys-card");
+    var countEl = document.getElementById("sys-count");
+    var active = "all";
+
+    function filter() {
+      var visible = 0;
+      cards.forEach(function (card) {
+        var show = false;
+        if (active === "all") show = true;
+        else if (active === "free") show = card.getAttribute("data-cost") === "free";
+        else if (active === "beginner") show = card.getAttribute("data-difficulty") === "Beginner";
+        else show = card.getAttribute("data-category") === active;
+        if (show) { card.classList.remove("hidden"); visible++; }
+        else card.classList.add("hidden");
+      });
+      if (countEl) countEl.textContent = String(visible);
+    }
+
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        active = btn.getAttribute("data-filter");
+        btns.forEach(function (b) {
+          b.classList.remove("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+          b.classList.add("bg-white", "text-gray-600", "border-gray-200");
+        });
+        btn.classList.remove("bg-white", "text-gray-600", "border-gray-200");
+        btn.classList.add("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+        filter();
+      });
+    });
+  })();
+</script>

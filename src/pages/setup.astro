@@ -1,0 +1,100 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Request a Setup Quote — Automation and AI Implementation"
+  description="Our Automation and AI specialists set up the right system for your business. Fixed price. 24 hour response. No commitment required."
+>
+
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">Request Setup</span>
+      </p>
+    </div>
+  </div>
+
+  <section class="py-16 bg-gray-50 min-h-screen">
+    <div class="max-w-2xl mx-auto px-4">
+
+      <div class="text-center mb-10">
+        <span class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase">Done-For-You</span>
+        <h1 class="text-3xl font-extrabold text-[#1A2F4E] mt-2 mb-3">Request an Automation and AI Setup Quote</h1>
+        <p class="text-gray-500 max-w-lg mx-auto">Tell us what your business needs. Our specialists design and build the right Automation and AI system for you. You get back to running your business.</p>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mb-10 text-center">
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-2xl mb-1">24hrs</p>
+          <p class="text-gray-500 text-xs">Response time</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-2xl mb-1">Fixed</p>
+          <p class="text-gray-500 text-xs">Upfront pricing</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-2xl mb-1">0 Risk</p>
+          <p class="text-gray-500 text-xs">No commitment</p>
+        </div>
+      </div>
+
+      <form
+        id="setup-form"
+        action="https://formspree.io/f/mkoqzqpk"
+        method="POST"
+        class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4"
+      >
+        <input type="hidden" name="source" value="Setup Request Page" />
+        <input type="hidden" name="_next" value="https://aherisystems.com/thank-you" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Your Name</label>
+            <input type="text" name="name" required placeholder="Jane Mwangi" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email Address</label>
+            <input type="email" name="email" required placeholder="jane@yourbusiness.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">What type of business do you run?</label>
+          <input type="text" name="business_type" placeholder="e.g. Freelance designer, Marketing agency, Retail shop" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">What do you want to automate or set up?</label>
+          <textarea name="message" required rows="4" placeholder="Describe your biggest operational pain. The more specific the better. e.g. I spend 3 hours every week manually sending invoices and following up on late payments." class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8] resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Which tools are you currently using? (optional)</label>
+          <input type="text" name="current_tools" placeholder="e.g. Gmail, WhatsApp, Excel, QuickBooks" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Monthly budget for this setup</label>
+          <select name="budget" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]">
+            <option value="">Select a range</option>
+            <option>Under $100</option>
+            <option>$100 - $300</option>
+            <option>$300 - $500</option>
+            <option>$500 - $1,000</option>
+            <option>$1,000+</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-extrabold py-3.5 rounded-xl transition-colors text-sm">
+          Send Request — We Respond Within 24 Hours
+        </button>
+        <p class="text-center text-gray-400 text-xs">No commitment required. Just a conversation about what you need.</p>
+      </form>
+
+    </div>
+  </section>
+
+</Layout>

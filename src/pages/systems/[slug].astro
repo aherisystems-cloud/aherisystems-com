@@ -1,0 +1,356 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
+import systems from "../../data/systems.js";
+import tools from "../../data/tools.js";
+
+export async function getStaticPaths() {
+  return systems.map((s) => ({
+    params: { slug: s.slug },
+    props: { system: s },
+  }));
+}
+
+const { system } = Astro.props;
+
+const systemTools = system.tools.map((st) => ({
+  ...st,
+  tool: tools.find((t) => t.slug === st.slug),
+}));
+
+const relatedSystems = systems.filter((s) => system.related_systems.includes(s.slug));
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": system.title,
+  "description": system.tagline,
+  "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+  "step": system.workflow.map((w) => ({
+    "@type": "HowToStep",
+    "position": w.step,
+    "name": w.title,
+    "text": w.description,
+  })),
+  "tool": system.tools.map((t) => ({ "@type": "HowToTool", "name": t.slug })),
+  "author": { "@type": "Person", "name": "Rit Andubi", "url": "https://ritandubi.com" },
+  "publisher": { "@type": "Organization", "name": "Aheri Systems", "url": "https://aherisystems.com" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": system.faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+
+<Layout
+  title={system.title + " — Automation and AI System for MSMEs"}
+  description={system.tagline + ". Save " + system.time_saved + " and " + system.money_saved + ". Free to implement. Setup time: " + system.setup_time + "."}
+>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/systems" class="hover:text-[#0ABFB8] transition-colors">Systems Library</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">{system.title}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex flex-col lg:flex-row items-start gap-10">
+
+        <!-- Left -->
+        <div class="flex-1">
+          <div class="flex flex-wrap gap-2 mb-4">
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full text-white" style={"background-color: " + system.badgeColor}>{system.badge}</span>
+            <span class="text-xs bg-white/10 text-gray-300 border border-white/20 px-2.5 py-1 rounded-full font-medium">{system.category}</span>
+            <span class="text-xs bg-white/10 text-gray-300 border border-white/20 px-2.5 py-1 rounded-full font-medium">{system.difficulty}</span>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4">{system.title}</h1>
+          <p class="text-gray-300 text-lg mb-6">{system.tagline}</p>
+
+          <div class="grid grid-cols-3 gap-3 mb-6">
+            {[
+              { label: "Time Saved", value: system.time_saved, color: "#0ABFB8" },
+              { label: "Money Saved", value: system.money_saved, color: "#059669" },
+              { label: "Total Cost", value: system.total_cost, color: "#D97706" },
+            ].map((o) => (
+              <div class="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+                <p class="font-extrabold text-lg" style={"color: " + o.color}>{o.value}</p>
+                <p class="text-gray-400 text-xs mt-1">{o.label}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="flex flex-wrap gap-3 text-sm text-gray-400">
+            <span>Setup time: <strong class="text-white">{system.setup_time}</strong></span>
+            <span class="text-gray-600">|</span>
+            <span>Tools: <strong class="text-white">{system.tools.length}</strong></span>
+            <span class="text-gray-600">|</span>
+            <span>Difficulty: <strong class="text-white">{system.difficulty}</strong></span>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="w-full lg:w-72 flex-shrink-0 space-y-4">
+          <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+            <p class="text-white font-extrabold text-base mb-1">Tools in this system</p>
+            <p class="text-gray-400 text-xs mb-4">Click any tool to view its full review</p>
+            <div class="space-y-2">
+              {systemTools.map((st) => (
+                <a href={"/tools/" + st.slug} class="flex items-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#0ABFB8]/40 rounded-lg px-3 py-2.5 transition-all group">
+                  <span class="w-7 h-7 bg-[#0ABFB8] rounded-lg flex items-center justify-center text-white text-xs font-extrabold flex-shrink-0">{st.slug[0].toUpperCase()}</span>
+                  <div>
+                    <p class="text-white text-xs font-bold group-hover:text-[#0ABFB8] transition-colors capitalize">{st.slug}</p>
+                    <p class="text-gray-500 text-xs">{st.role}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+          <div class="bg-[#0ABFB8]/10 border border-[#0ABFB8]/30 rounded-2xl p-5 text-center">
+            <p class="text-white font-extrabold text-base mb-2">Need help setting this up?</p>
+            <p class="text-gray-400 text-xs mb-4">Our specialists implement this system for you. Fixed price. 24hr turnaround.</p>
+            <a href="#setup-form" class="block w-full text-center bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold py-3 rounded-xl transition-colors text-sm">
+              Request Setup Quote
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="max-w-5xl mx-auto px-4 py-12 space-y-14">
+
+    <!-- THE PROBLEM -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-4">The Problem This System Solves</h2>
+      <div class="bg-red-50 border-l-4 border-red-400 rounded-r-xl px-6 py-5 mb-4">
+        <p class="text-xs font-bold text-red-500 uppercase tracking-wide mb-2">The Pain</p>
+        <p class="text-gray-700 leading-relaxed">{system.problem}</p>
+      </div>
+      <div class="bg-green-50 border-l-4 border-[#0ABFB8] rounded-r-xl px-6 py-5">
+        <p class="text-xs font-bold text-[#0ABFB8] uppercase tracking-wide mb-2">The Solution</p>
+        <p class="text-gray-700 leading-relaxed">{system.solution}</p>
+      </div>
+    </section>
+
+    <!-- OUTCOME SCORES -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">What This System Does for Your Business</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[
+          { label: "Save Time", color: "#0ABFB8", bg: "bg-[#0ABFB8]", lightBg: "bg-[#0ABFB8]/10", border: "border-[#0ABFB8]/30", data: system.outcomes.save_time },
+          { label: "Save Money", color: "#059669", bg: "bg-[#059669]", lightBg: "bg-[#059669]/10", border: "border-[#059669]/30", data: system.outcomes.save_money },
+          { label: "Make Money", color: "#D97706", bg: "bg-[#D97706]", lightBg: "bg-[#D97706]/10", border: "border-[#D97706]/30", data: system.outcomes.make_money },
+        ].map((o) => (
+          <div class={`rounded-xl border p-5 ${o.lightBg} ${o.border}`}>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-extrabold text-gray-700 uppercase tracking-wide">{o.label}</span>
+              <span class="text-sm font-extrabold" style={"color: " + o.color}>{o.data.metric}</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+              <div class={`h-2 rounded-full ${o.bg}`} style={"width: " + (o.data.score * 10) + "%"}></div>
+            </div>
+            <p class="text-xs text-gray-600 leading-relaxed">{o.data.detail}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- THE WORKFLOW -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">How the System Works</h2>
+      <p class="text-gray-500 text-sm mb-6">The exact sequence of events once this system is set up and running:</p>
+      <div class="relative">
+        <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+        <div class="space-y-4">
+          {system.workflow.map((step) => (
+            <div class="flex gap-4 relative">
+              <div class="w-10 h-10 bg-[#1A2F4E] rounded-full flex items-center justify-center text-[#0ABFB8] font-extrabold text-sm flex-shrink-0 relative z-10">{step.step}</div>
+              <div class="flex-1 bg-white border border-gray-200 rounded-xl p-4 hover:border-[#0ABFB8] transition-colors">
+                <p class="font-bold text-[#1A2F4E] text-sm mb-1">{step.title}</p>
+                <p class="text-gray-500 text-sm">{step.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS IN THE STACK -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">Tools in This System</h2>
+      <p class="text-gray-500 text-sm mb-6">Each tool has a specific role. Click any tool to read the full review and access the affiliate link.</p>
+      <div class="space-y-5">
+        {systemTools.map((st, i) => (
+          <div class="bg-white border border-gray-200 rounded-2xl p-6 hover:border-[#0ABFB8] transition-all">
+            <div class="flex items-start justify-between gap-4 mb-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-[#1A2F4E] rounded-xl flex items-center justify-center text-white font-extrabold text-lg flex-shrink-0">{i + 1}</div>
+                <div>
+                  <h3 class="font-extrabold text-[#1A2F4E] text-base capitalize">{st.slug}</h3>
+                  <p class="text-[#0ABFB8] text-xs font-bold">{st.role}</p>
+                </div>
+              </div>
+              <div class="flex gap-2 flex-shrink-0">
+                <a href={"/tools/" + st.slug} class="text-xs border border-gray-200 hover:border-[#0ABFB8] text-gray-600 hover:text-[#0ABFB8] font-semibold px-3 py-1.5 rounded-lg transition-colors">Full Review</a>
+                {st.tool && <a href={st.tool.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="text-xs bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold px-3 py-1.5 rounded-lg transition-colors">Try Free</a>}
+              </div>
+            </div>
+            <p class="text-gray-600 text-sm mb-4 leading-relaxed">{st.why}</p>
+            <div class="bg-gray-50 border border-gray-100 rounded-lg px-4 py-3 mb-4">
+              <p class="text-xs font-bold text-green-700">Free limit: {st.free_limit}</p>
+            </div>
+            <div>
+              <p class="text-xs font-bold text-gray-700 uppercase tracking-wide mb-2">Setup steps:</p>
+              <ol class="space-y-1.5">
+                {st.setup_steps.map((step, j) => (
+                  <li class="flex items-start gap-2 text-sm text-gray-600">
+                    <span class="w-5 h-5 bg-[#0ABFB8]/10 border border-[#0ABFB8]/30 rounded flex items-center justify-center text-[#0ABFB8] text-xs font-bold flex-shrink-0 mt-0.5">{j + 1}</span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- NEWSLETTER MID -->
+    <section>
+      <NewsletterSignup variant="light" />
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Frequently Asked Questions</h2>
+      <div class="space-y-4">
+        {system.faqs.map((faq) => (
+          <div class="border border-gray-200 rounded-xl overflow-hidden">
+            <details class="group">
+              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-[#1A2F4E] text-sm hover:bg-gray-50 transition-colors">
+                {faq.q}
+                <span class="text-[#0ABFB8] text-lg font-bold ml-4 flex-shrink-0">+</span>
+              </summary>
+              <div class="px-5 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                {faq.a}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- RELATED SYSTEMS -->
+    {relatedSystems.length > 0 && (
+      <section>
+        <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Related Systems</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {relatedSystems.map((rs) => (
+            <a href={"/systems/" + rs.slug} class="bg-gray-50 border border-gray-200 hover:border-[#0ABFB8] rounded-2xl p-5 transition-all group">
+              <span class="text-xs font-bold px-2.5 py-1 rounded-full text-white mb-3 inline-block" style={"background-color: " + rs.badgeColor}>{rs.badge}</span>
+              <h3 class="font-extrabold text-[#1A2F4E] group-hover:text-[#0ABFB8] text-base mb-1 transition-colors">{rs.title}</h3>
+              <p class="text-gray-500 text-sm">{rs.tagline}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+  </div>
+
+  <!-- DONE FOR YOU -->
+  <section class="py-14 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-2xl mx-auto px-4 text-center">
+      <span class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase">Done-For-You Setup</span>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mt-2 mb-3">Want this system set up for your business today?</h2>
+      <p class="text-gray-500 text-sm mb-6 max-w-lg mx-auto">Our Automation and AI specialists implement this exact system in your business. You get back to running it.</p>
+
+      <div class="grid grid-cols-3 gap-4 mb-8 text-center">
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">24hrs</p>
+          <p class="text-gray-500 text-xs">Response time</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">Fixed</p>
+          <p class="text-gray-500 text-xs">Upfront price</p>
+        </div>
+        <div class="bg-white border border-gray-200 rounded-xl p-4">
+          <p class="text-[#0ABFB8] font-extrabold text-xl mb-1">0 Risk</p>
+          <p class="text-gray-500 text-xs">No commitment</p>
+        </div>
+      </div>
+
+      <form
+        id="setup-form"
+        action="https://formspree.io/f/mkoqzqpk"
+        method="POST"
+        class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm space-y-4 text-left"
+      >
+        <input type="hidden" name="system" value={system.title} />
+        <input type="hidden" name="source" value={"System Page: " + system.title} />
+        <input type="hidden" name="_next" value="https://aherisystems.com/thank-you" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Your Name</label>
+            <input type="text" name="name" required placeholder="Jane Mwangi" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5">Email Address</label>
+            <input type="email" name="email" required placeholder="jane@yourbusiness.com" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Tell us about your business</label>
+          <textarea name="message" required rows="3" placeholder="What type of business do you run? What is the biggest operational pain you want to solve?" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ABFB8] resize-none"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5">Budget for this setup</label>
+          <select name="budget" class="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#0ABFB8]">
+            <option value="">Select a range</option>
+            <option>Under $100</option>
+            <option>$100 - $300</option>
+            <option>$300 - $500</option>
+            <option>$500 - $1,000</option>
+            <option>$1,000+</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-extrabold py-3.5 rounded-xl transition-colors text-sm">
+          Request Setup Quote
+        </button>
+        <p class="text-center text-gray-400 text-xs">No commitment. We reply within 24 hours.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup variant="teal" />
+    </div>
+  </section>
+
+</Layout>
