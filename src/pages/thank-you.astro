@@ -2,32 +2,108 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title="Request Received" description="We have received your setup request and will respond within 24 hours.">
+<Layout
+  title="Thank You — Aheri Systems"
+  description="Your submission has been received. We will be in touch shortly."
+>
+
   <section class="bg-gray-50 min-h-screen flex items-center justify-center py-20">
-    <div class="max-w-lg mx-auto px-4 text-center">
-      <div class="w-20 h-20 bg-[#0ABFB8]/10 border-2 border-[#0ABFB8] rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
-        &#10003;
+    <div class="max-w-lg mx-auto px-4 text-center" id="thank-you-container">
+
+      <!-- Default state — will be replaced by JS based on source -->
+      <div id="msg-default">
+        <div class="w-20 h-20 bg-[#0ABFB8]/10 border-2 border-[#0ABFB8] rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+          &#10003;
+        </div>
+        <h1 class="text-3xl font-extrabold text-[#1A2F4E] mb-3">Received. Thank you.</h1>
+        <p class="text-gray-500 text-lg mb-8">We will be in touch shortly.</p>
+        <a href="/" class="inline-block bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold px-8 py-3.5 rounded-xl transition-colors text-sm">Back to Home</a>
       </div>
-      <h1 class="text-3xl font-extrabold text-[#1A2F4E] mb-3">Request Received</h1>
-      <p class="text-gray-500 text-lg mb-6">We have your setup request and will respond within 24 hours with a clear plan — no jargon, no sales pitch.</p>
-      <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-8 text-left space-y-3">
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">1</span>
-          <span class="text-gray-700 text-sm">You will receive a confirmation email shortly</span>
+
+      <!-- Setup request message -->
+      <div id="msg-setup" class="hidden">
+        <div class="w-20 h-20 bg-[#0ABFB8]/10 border-2 border-[#0ABFB8] rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+          &#10003;
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">2</span>
-          <span class="text-gray-700 text-sm">Our team reviews your request within 24 hours</span>
+        <h1 class="text-3xl font-extrabold text-[#1A2F4E] mb-3">Request Received</h1>
+        <p class="text-gray-500 text-lg mb-6">We have your setup request and will respond within 24 hours with a clear plan — no jargon, no sales pitch.</p>
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-8 text-left space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">1</span>
+            <span class="text-gray-700 text-sm">You will receive a confirmation email shortly</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">2</span>
+            <span class="text-gray-700 text-sm">Our team reviews your request within 24 hours</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">3</span>
+            <span class="text-gray-700 text-sm">We send you a fixed-price quote — no hidden costs</span>
+          </div>
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-6 h-6 bg-[#0ABFB8] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">3</span>
-          <span class="text-gray-700 text-sm">We send you a fixed-price quote — no hidden costs</span>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/tools" class="inline-block bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold px-6 py-3.5 rounded-xl transition-colors text-sm">Browse More Tools</a>
+          <a href="/systems" class="inline-block border border-gray-300 hover:border-[#0ABFB8] text-gray-600 hover:text-[#0ABFB8] font-bold px-6 py-3.5 rounded-xl transition-colors text-sm">Explore Systems</a>
         </div>
+        <p class="text-gray-400 text-xs mt-6">Questions? Email us at hello@aherisystems.com</p>
       </div>
-      <a href="/tools" class="inline-block bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-extrabold px-8 py-3.5 rounded-xl transition-colors text-sm mb-4">
-        Browse More Tools
-      </a>
-      <p class="text-gray-400 text-xs">Questions? Email us at hello@aherisystems.com</p>
+
+      <!-- Tool submission message -->
+      <div id="msg-tool" class="hidden">
+        <div class="w-20 h-20 bg-green-100 border-2 border-green-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+          &#10003;
+        </div>
+        <h1 class="text-3xl font-extrabold text-[#1A2F4E] mb-3">Tool Submitted</h1>
+        <p class="text-gray-500 text-lg mb-6">Your tool submission has been received. We review every submission personally and will be in touch within 48 hours.</p>
+        <div class="bg-white border border-gray-200 rounded-2xl p-6 mb-8 text-left space-y-3">
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">1</span>
+            <span class="text-gray-700 text-sm">Our team reviews your submission within 48 hours</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">2</span>
+            <span class="text-gray-700 text-sm">We verify the tool meets our MSME quality standards</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">3</span>
+            <span class="text-gray-700 text-sm">Free listings go live within 48 hours of approval</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">4</span>
+            <span class="text-gray-700 text-sm">Premium listings go live immediately on payment</span>
+          </div>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a href="/tools" class="inline-block bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold px-6 py-3.5 rounded-xl transition-colors text-sm">View the Directory</a>
+          <a href="/advertise" class="inline-block border border-gray-300 hover:border-[#0ABFB8] text-gray-600 hover:text-[#0ABFB8] font-bold px-6 py-3.5 rounded-xl transition-colors text-sm">Learn About Premium Listings</a>
+        </div>
+        <p class="text-gray-400 text-xs mt-6">Questions? Email us at hello@aherisystems.com</p>
+      </div>
+
     </div>
   </section>
+
 </Layout>
+
+<script is:inline>
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    var source = params.get("source") || "";
+
+    var msgDefault = document.getElementById("msg-default");
+    var msgSetup = document.getElementById("msg-setup");
+    var msgTool = document.getElementById("msg-tool");
+
+    if (source.indexOf("Tool") !== -1 || source.indexOf("Submit") !== -1) {
+      msgDefault.classList.add("hidden");
+      msgTool.classList.remove("hidden");
+    } else if (
+      source.indexOf("Setup") !== -1 ||
+      source.indexOf("System") !== -1 ||
+      source.indexOf("Review") !== -1
+    ) {
+      msgDefault.classList.add("hidden");
+      msgSetup.classList.remove("hidden");
+    }
+  })();
+</script>
