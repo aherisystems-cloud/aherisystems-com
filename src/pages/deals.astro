@@ -1,0 +1,387 @@
+---
+import Layout from "../layouts/Layout.astro";
+import NewsletterSignup from "../components/NewsletterSignup.astro";
+
+const deals = [
+  {
+    name: "Zapier",
+    tagline: "Automate your work across 6,000+ apps",
+    offer: "Free plan — 5 Zaps and 100 tasks forever",
+    original_price: null,
+    deal_price: "$0",
+    saving: "Free forever",
+    category: "Automation",
+    badge: "Always Free",
+    badgeColor: "#0ABFB8",
+    highlight: true,
+    affiliate_url: "https://zapier.com/?via=aherisystems",
+    slug: "zapier",
+    expires: null,
+    color: "#FF4F00",
+    why: "The easiest way to start automating. Free plan is genuinely useful for solo entrepreneurs and small teams.",
+  },
+  {
+    name: "Make",
+    tagline: "Visual automation for complex business workflows",
+    offer: "Free plan — 1,000 operations per month, unlimited scenarios",
+    original_price: null,
+    deal_price: "$0",
+    saving: "Free forever",
+    category: "Automation",
+    badge: "Best Free Tier",
+    badgeColor: "#059669",
+    highlight: true,
+    affiliate_url: "https://make.com/?via=aherisystems",
+    slug: "make",
+    expires: null,
+    color: "#6D00CC",
+    why: "Most generous free tier of any automation tool. 10x more operations than Zapier's free plan.",
+  },
+  {
+    name: "HubSpot CRM",
+    tagline: "Track every lead, deal and client interaction",
+    offer: "Free CRM — unlimited users, contacts and deals. No time limit.",
+    original_price: "$45/mo",
+    deal_price: "$0",
+    saving: "$540/year",
+    category: "CRM",
+    badge: "Free Forever",
+    badgeColor: "#DC2626",
+    highlight: true,
+    affiliate_url: "https://hubspot.com/?via=aherisystems",
+    slug: "hubspot",
+    expires: null,
+    color: "#FF7A59",
+    why: "The most powerful free CRM available. No catch, no time limit. Scales with your business.",
+  },
+  {
+    name: "Notion",
+    tagline: "One workspace for your entire business",
+    offer: "Free plan — unlimited pages, databases and blocks for individuals",
+    original_price: "$8/mo",
+    deal_price: "$0",
+    saving: "$96/year",
+    category: "Productivity",
+    badge: "Free for Solo",
+    badgeColor: "#D97706",
+    highlight: false,
+    affiliate_url: "https://notion.so/?via=aherisystems",
+    slug: "notion",
+    expires: null,
+    color: "#000000",
+    why: "Replaces 5 different tools with one free workspace. The best productivity tool for solo entrepreneurs.",
+  },
+  {
+    name: "ConvertKit",
+    tagline: "Build your email list and sell digital products",
+    offer: "Free up to 1,000 subscribers — landing pages and email broadcasts included",
+    original_price: "$25/mo",
+    deal_price: "$0",
+    saving: "$300/year",
+    category: "Email Marketing",
+    badge: "Free to 1K Subs",
+    badgeColor: "#0052CC",
+    highlight: false,
+    affiliate_url: "https://convertkit.com/?via=aherisystems",
+    slug: "convertkit",
+    expires: null,
+    color: "#FB6970",
+    why: "Best email tool for creators and solopreneurs. Free until you hit 1,000 subscribers.",
+  },
+  {
+    name: "ClickUp",
+    tagline: "Replace every project management tool with one",
+    offer: "Free plan — unlimited tasks and unlimited members",
+    original_price: "$7/mo",
+    deal_price: "$0",
+    saving: "$84/year",
+    category: "Project Management",
+    badge: "Unlimited Tasks Free",
+    badgeColor: "#7C3AED",
+    highlight: false,
+    affiliate_url: "https://clickup.com/?via=aherisystems",
+    slug: "clickup",
+    expires: null,
+    color: "#7C3AED",
+    why: "Most feature-rich project management tool with a genuinely useful free plan for small teams.",
+  },
+  {
+    name: "Wave",
+    tagline: "Free invoicing and accounting for small businesses",
+    offer: "Invoicing and accounting completely free — no time limit, no credit card",
+    original_price: "$16/mo",
+    deal_price: "$0",
+    saving: "$192/year",
+    category: "Finance",
+    badge: "100% Free",
+    badgeColor: "#059669",
+    highlight: false,
+    affiliate_url: "https://waveapps.com/?via=aherisystems",
+    slug: "wave",
+    expires: null,
+    color: "#06B6D4",
+    why: "Completely free professional invoicing and accounting. No catch. Built specifically for small businesses.",
+  },
+  {
+    name: "Buffer",
+    tagline: "Schedule and publish social media without the daily grind",
+    offer: "Free plan — 3 channels and 10 scheduled posts per channel",
+    original_price: "$6/mo",
+    deal_price: "$0",
+    saving: "$72/year",
+    category: "Social Media",
+    badge: "Free Starter",
+    badgeColor: "#0891B2",
+    highlight: false,
+    affiliate_url: "https://buffer.com/?via=aherisystems",
+    slug: "buffer",
+    expires: null,
+    color: "#0891B2",
+    why: "Simplest social media scheduler available. Free plan is enough for most solo entrepreneurs.",
+  },
+];
+
+const highlighted = deals.filter((d) => d.highlight);
+const regular = deals.filter((d) => !d.highlight);
+const categories = [...new Set(deals.map((d) => d.category))];
+
+const totalSavings = deals
+  .filter((d) => d.original_price)
+  .reduce((sum, d) => {
+    const match = d.saving.match(/\$(\d+)/);
+    return sum + (match ? parseInt(match[1]) : 0);
+  }, 0);
+---
+
+<Layout
+  title="Best Free and Discounted Business Automation Tools — Deals"
+  description="The best free plans and deals on Automation and AI tools for MSMEs and solo entrepreneurs. Save hundreds every month with these verified offers."
+>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">Deals</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-3xl">
+        <p class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase mb-4">Automation and AI Tool Deals</p>
+        <h1 class="text-4xl font-extrabold text-white leading-tight mb-4">
+          Run a smarter business<br/>without the big software bills.
+        </h1>
+        <p class="text-gray-300 text-lg mb-8">
+          Every deal on this page has been verified. Free plans that are genuinely useful. Discounts that are actually worth taking. No fake urgency. No padded original prices. Just the real best offers available right now.
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-white">{deals.length}</span>
+            <span class="text-gray-400 text-sm">verified deals</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-[#0ABFB8]">${totalSavings}+</span>
+            <span class="text-gray-400 text-sm">potential annual savings</span>
+          </div>
+          <div class="flex items-center gap-2 bg-white/5 border border-white/10 rounded-lg px-4 py-2">
+            <span class="font-extrabold text-white">{deals.filter((d) => d.deal_price === "$0").length}</span>
+            <span class="text-gray-400 text-sm">completely free tools</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <section class="bg-white border-b border-gray-100 py-3 sticky top-16 z-40">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center gap-3 overflow-x-auto">
+        <span class="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap flex-shrink-0">Filter:</span>
+        <button class="deal-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-[#1A2F4E] text-white border-[#1A2F4E] transition-colors" data-filter="all">All Deals</button>
+        {categories.map((cat) => (
+          <button class="deal-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-gray-600 border-gray-200 hover:border-[#0ABFB8] hover:text-[#0ABFB8] transition-colors" data-filter={cat}>{cat}</button>
+        ))}
+        <button class="deal-filter flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-bold border bg-white text-gray-600 border-gray-200 hover:border-green-600 hover:text-green-600 transition-colors" data-filter="free">Free Only</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HIGHLIGHTED DEALS -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4">
+
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-xl font-extrabold text-[#1A2F4E]">Top Picks This Month</h2>
+        <p class="text-gray-500 text-sm">
+          <span id="deal-count" class="font-bold text-[#1A2F4E]">{deals.length}</span> deals total
+        </p>
+      </div>
+
+      <!-- Featured 3 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+        {highlighted.map((deal) => (
+          <div
+            class="deal-card bg-white border-2 border-[#0ABFB8] rounded-2xl p-6 flex flex-col relative overflow-hidden"
+            data-category={deal.category}
+            data-free={deal.deal_price === "$0" ? "true" : "false"}
+          >
+            <div class="absolute top-0 right-0 bg-[#0ABFB8] text-white text-xs font-bold px-3 py-1 rounded-bl-xl">TOP PICK</div>
+
+            <div class="flex items-start gap-3 mb-4">
+              <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-extrabold text-xl flex-shrink-0" style={"background-color: " + deal.color}>
+                {deal.name[0]}
+              </div>
+              <div>
+                <h3 class="font-extrabold text-[#1A2F4E] text-base">{deal.name}</h3>
+                <p class="text-gray-400 text-xs">{deal.tagline}</p>
+              </div>
+            </div>
+
+            <div class="bg-[#0ABFB8]/10 border border-[#0ABFB8]/30 rounded-xl p-4 mb-4">
+              <p class="text-[#0ABFB8] font-extrabold text-lg mb-1">{deal.deal_price}</p>
+              <p class="text-gray-600 text-xs">{deal.offer}</p>
+              {deal.original_price && (
+                <p class="text-gray-400 text-xs mt-1">
+                  Worth <span class="line-through">{deal.original_price}</span>
+                  <span class="text-green-600 font-bold ml-1">Save {deal.saving}</span>
+                </p>
+              )}
+            </div>
+
+            <p class="text-gray-500 text-xs leading-relaxed mb-4 flex-1">{deal.why}</p>
+
+            <div class="space-y-2">
+              <a href={deal.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block w-full text-center bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-bold py-3 rounded-xl transition-colors text-sm">
+                Get This Deal Free
+              </a>
+              <a href={"/tools/" + deal.slug} class="block w-full text-center border border-gray-200 hover:border-[#0ABFB8] text-gray-600 hover:text-[#0ABFB8] font-medium py-2.5 rounded-xl transition-colors text-xs">
+                Read Full Review
+              </a>
+            </div>
+            <p class="text-center text-gray-400 text-xs mt-2">Affiliate link — we earn a commission</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- ALL DEALS LIST -->
+      <h2 class="text-xl font-extrabold text-[#1A2F4E] mb-5">All Current Deals</h2>
+      <div id="deals-grid" class="space-y-4">
+        {deals.map((deal) => (
+          <div
+            class="deal-card bg-white border border-gray-200 rounded-xl p-5 hover:border-[#0ABFB8] hover:shadow-md transition-all"
+            data-category={deal.category}
+            data-free={deal.deal_price === "$0" ? "true" : "false"}
+          >
+            <div class="flex flex-col md:flex-row md:items-center gap-4">
+
+              <!-- Tool info -->
+              <div class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-extrabold text-lg flex-shrink-0" style={"background-color: " + deal.color}>
+                  {deal.name[0]}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <h3 class="font-extrabold text-[#1A2F4E] text-sm">{deal.name}</h3>
+                    <span class="text-xs font-bold px-2 py-0.5 rounded-full text-white flex-shrink-0" style={"background-color: " + deal.badgeColor}>{deal.badge}</span>
+                  </div>
+                  <p class="text-gray-400 text-xs truncate">{deal.tagline}</p>
+                </div>
+              </div>
+
+              <!-- Deal details -->
+              <div class="md:w-64 flex-shrink-0">
+                <p class="text-xs text-gray-500 leading-relaxed">{deal.offer}</p>
+                {deal.original_price && (
+                  <p class="text-xs text-green-600 font-bold mt-1">Save {deal.saving}/year</p>
+                )}
+              </div>
+
+              <!-- Price + CTA -->
+              <div class="flex items-center gap-3 flex-shrink-0">
+                <div class="text-right">
+                  <p class="text-xl font-extrabold text-[#0ABFB8]">{deal.deal_price}</p>
+                  {deal.original_price && (
+                    <p class="text-xs text-gray-400 line-through">{deal.original_price}</p>
+                  )}
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <a href={deal.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block text-center bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold px-4 py-2 rounded-lg transition-colors text-xs whitespace-nowrap">
+                    Get Deal
+                  </a>
+                  <a href={"/tools/" + deal.slug} class="block text-center border border-gray-200 hover:border-[#0ABFB8] text-gray-500 hover:text-[#0ABFB8] font-medium px-4 py-1.5 rounded-lg transition-colors text-xs whitespace-nowrap">
+                    Review
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup
+        variant="teal"
+        title="Get new deals in your inbox every Monday"
+        subtitle="Every week without Automation and AI your competitors pull further ahead. 5,000+ MSMEs already fixed this. Join them free."
+      />
+    </div>
+  </section>
+
+  <!-- DISCLOSURE -->
+  <section class="py-8 bg-white border-t border-gray-100">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <p class="text-gray-400 text-xs leading-relaxed">
+        Some links on this page are affiliate links. When you click and make a purchase, Aheri Systems earns a small commission at no extra cost to you. This helps us keep the platform free. Our deals and recommendations are never influenced by commercial relationships.
+        <a href="/disclosure" class="text-[#0ABFB8] hover:underline ml-1">Read our full disclosure policy.</a>
+      </p>
+    </div>
+  </section>
+
+</Layout>
+
+<script is:inline>
+  (function () {
+    var btns = document.querySelectorAll(".deal-filter");
+    var cards = document.querySelectorAll(".deal-card");
+    var countEl = document.getElementById("deal-count");
+    var active = "all";
+
+    function filter() {
+      var visible = 0;
+      cards.forEach(function (card) {
+        var show = false;
+        if (active === "all") show = true;
+        else if (active === "free") show = card.getAttribute("data-free") === "true";
+        else show = card.getAttribute("data-category") === active;
+        if (show) { card.classList.remove("hidden"); visible++; }
+        else card.classList.add("hidden");
+      });
+      if (countEl) countEl.textContent = String(visible);
+    }
+
+    btns.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        active = btn.getAttribute("data-filter");
+        btns.forEach(function (b) {
+          b.classList.remove("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+          b.classList.add("bg-white", "text-gray-600", "border-gray-200");
+        });
+        btn.classList.remove("bg-white", "text-gray-600", "border-gray-200");
+        btn.classList.add("bg-[#1A2F4E]", "text-white", "border-[#1A2F4E]");
+        filter();
+      });
+    });
+  })();
+</script>
