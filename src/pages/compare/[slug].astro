@@ -1,0 +1,316 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import NewsletterSignup from "../../components/NewsletterSignup.astro";
+import comparisons from "../../data/comparisons.js";
+import tools from "../../data/tools.js";
+
+export async function getStaticPaths() {
+  return comparisons.map((c) => ({
+    params: { slug: c.slug },
+    props: { comparison: c },
+  }));
+}
+
+const { comparison: c } = Astro.props;
+
+const toolA = tools.find((t) => t.slug === c.tool_a);
+const toolB = tools.find((t) => t.slug === c.tool_b);
+const winner = tools.find((t) => t.slug === c.verdict);
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": c.title,
+  "description": c.meta,
+  "dateModified": c.updated,
+  "author": { "@type": "Person", "name": "Rit Andubi", "url": "https://ritandubi.com" },
+  "publisher": { "@type": "Organization", "name": "Aheri Systems", "url": "https://aherisystems.com" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": c.faqs.map((f) => ({
+    "@type": "Question",
+    "name": f.q,
+    "acceptedAnswer": { "@type": "Answer", "text": f.a }
+  }))
+};
+---
+
+<Layout title={c.title} description={c.meta}>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-gray-50 border-b border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 py-3">
+      <p class="text-xs text-gray-400">
+        <a href="/" class="hover:text-[#0ABFB8] transition-colors">Home</a>
+        <span class="mx-2">/</span>
+        <a href="/compare" class="hover:text-[#0ABFB8] transition-colors">Compare</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-600 font-medium">{toolA?.name} vs {toolB?.name}</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="bg-[#1A2F4E] pt-14 pb-16">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <p class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase mb-4">Automation and AI Tool Comparison</p>
+      <h1 class="text-3xl md:text-4xl font-extrabold text-white leading-tight mb-4">{c.headline}</h1>
+      <p class="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">{c.intro}</p>
+
+      <!-- Tool A vs Tool B cards -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-5 w-full sm:w-52 text-center">
+          <div class="w-14 h-14 bg-[#FF4F00] rounded-xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3">{toolA?.name[0]}</div>
+          <p class="text-white font-extrabold text-lg">{toolA?.name}</p>
+          <p class="text-gray-400 text-xs mt-1">{toolA?.pricing}</p>
+          <div class="flex items-center justify-center gap-1 mt-2">
+            <span class="text-amber-400 text-sm">&#9733;</span>
+            <span class="text-white text-sm font-bold">{toolA?.rating}</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-center gap-1">
+          <span class="text-2xl font-extrabold text-[#0ABFB8]">VS</span>
+          <span class="text-gray-500 text-xs">{c.updated}</span>
+          <span class="text-gray-500 text-xs">{c.read_time}</span>
+        </div>
+
+        <div class="bg-white/10 border border-white/20 rounded-2xl p-5 w-full sm:w-52 text-center">
+          <div class="w-14 h-14 bg-[#6D00CC] rounded-xl flex items-center justify-center text-white font-extrabold text-2xl mx-auto mb-3">{toolB?.name[0]}</div>
+          <p class="text-white font-extrabold text-lg">{toolB?.name}</p>
+          <p class="text-gray-400 text-xs mt-1">{toolB?.pricing}</p>
+          <div class="flex items-center justify-center gap-1 mt-2">
+            <span class="text-amber-400 text-sm">&#9733;</span>
+            <span class="text-white text-sm font-bold">{toolB?.rating}</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-gray-400 text-xs">Updated {c.updated} by <a href="https://ritandubi.com" class="text-[#0ABFB8] hover:underline">Rit Andubi</a></p>
+    </div>
+  </section>
+
+  <!-- VERDICT BOX -->
+  <section class="py-10 bg-white border-b border-gray-100">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="bg-[#0ABFB8]/10 border-2 border-[#0ABFB8] rounded-2xl p-6 md:p-8">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase bg-[#0ABFB8]/10 px-3 py-1 rounded-full">Our Verdict</span>
+        </div>
+        <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-3">{c.verdict_headline}</h2>
+        <p class="text-gray-600 leading-relaxed mb-6">{c.verdict_detail}</p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href={winner?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="flex-1 block text-center bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold py-3.5 rounded-xl transition-colors">
+            Try {winner?.name} Free
+          </a>
+          <a href={"/tools/" + winner?.slug} class="flex-1 block text-center border-2 border-[#1A2F4E] text-[#1A2F4E] hover:bg-[#1A2F4E] hover:text-white font-bold py-3.5 rounded-xl transition-colors">
+            Read Full {winner?.name} Review
+          </a>
+        </div>
+        <p class="text-gray-400 text-xs text-center mt-3">Affiliate link. We earn a commission at no extra cost to you. Our verdict is independent.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="max-w-4xl mx-auto px-4 py-12 space-y-14">
+
+    <!-- HEAD TO HEAD -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-2">Head-to-Head: {toolA?.name} vs {toolB?.name}</h2>
+      <p class="text-gray-500 text-sm mb-6">Scored out of 10 based on real-world MSME use. Not marketing claims.</p>
+
+      <div class="space-y-4">
+        {c.head_to_head.map((row) => (
+          <div class="bg-white border border-gray-200 rounded-xl p-5">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="font-extrabold text-[#1A2F4E] text-sm uppercase tracking-wide">{row.criterion}</h3>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-[#FF4F00]">{toolA?.name}: {row.a_score}/10</span>
+                <span class="text-gray-300">|</span>
+                <span class="text-xs font-bold text-[#6D00CC]">{toolB?.name}: {row.b_score}/10</span>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-orange-50 border border-orange-100 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-5 h-5 bg-[#FF4F00] rounded flex items-center justify-center text-white text-xs font-extrabold">{toolA?.name[0]}</span>
+                  <span class="text-xs font-bold text-gray-700">{toolA?.name}</span>
+                  <div class="flex-1 bg-gray-200 rounded-full h-1.5 ml-1">
+                    <div class="h-1.5 rounded-full bg-[#FF4F00]" style={"width: " + (row.a_score * 10) + "%"}></div>
+                  </div>
+                  <span class="text-xs font-extrabold text-[#FF4F00]">{row.a_score}</span>
+                </div>
+                <p class="text-gray-600 text-xs leading-relaxed">{row.a_note}</p>
+              </div>
+              <div class="bg-purple-50 border border-purple-100 rounded-lg p-3">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="w-5 h-5 bg-[#6D00CC] rounded flex items-center justify-center text-white text-xs font-extrabold">{toolB?.name[0]}</span>
+                  <span class="text-xs font-bold text-gray-700">{toolB?.name}</span>
+                  <div class="flex-1 bg-gray-200 rounded-full h-1.5 ml-1">
+                    <div class="h-1.5 rounded-full bg-[#6D00CC]" style={"width: " + (row.b_score * 10) + "%"}></div>
+                  </div>
+                  <span class="text-xs font-extrabold text-[#6D00CC]">{row.b_score}</span>
+                </div>
+                <p class="text-gray-600 text-xs leading-relaxed">{row.b_note}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- PRICING COMPARISON -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Pricing: {toolA?.name} vs {toolB?.name}</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse">
+          <thead>
+            <tr class="bg-[#1A2F4E]">
+              <th class="text-left px-4 py-3 text-white text-xs font-bold uppercase tracking-wide rounded-tl-xl">Plan</th>
+              <th class="text-left px-4 py-3 text-white text-xs font-bold uppercase tracking-wide">
+                <span class="text-[#FF9966]">{toolA?.name}</span>
+              </th>
+              <th class="text-left px-4 py-3 text-white text-xs font-bold uppercase tracking-wide rounded-tr-xl">
+                <span class="text-[#CC88FF]">{toolB?.name}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {c.pricing_comparison.map((row, i) => (
+              <tr class={i % 2 === 0 ? "bg-gray-50" : "bg-white"}>
+                <td class="px-4 py-3 text-xs font-bold text-gray-700 border-b border-gray-100">{row.plan}</td>
+                <td class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-sm font-extrabold text-[#FF4F00]">{row.a_price}</p>
+                  <p class="text-xs text-gray-500">{row.a_detail}</p>
+                </td>
+                <td class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-sm font-extrabold text-[#6D00CC]">{row.b_price}</p>
+                  <p class="text-xs text-gray-500">{row.b_detail}</p>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
+        <a href={toolA?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block text-center bg-[#FF4F00] hover:opacity-90 text-white font-bold py-3 rounded-xl transition-opacity text-sm">
+          Try {toolA?.name} Free
+        </a>
+        <a href={toolB?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block text-center bg-[#6D00CC] hover:opacity-90 text-white font-bold py-3 rounded-xl transition-opacity text-sm">
+          Try {toolB?.name} Free
+        </a>
+      </div>
+      <p class="text-gray-400 text-xs text-center mt-3">Affiliate links. We earn commissions at no extra cost to you.</p>
+    </section>
+
+    <!-- WHEN TO USE EACH -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">Which One Should You Choose?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="border-2 border-[#FF4F00]/30 bg-orange-50 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-[#FF4F00] rounded-xl flex items-center justify-center text-white font-extrabold text-lg">{toolA?.name[0]}</div>
+            <h3 class="font-extrabold text-[#1A2F4E] text-base">Choose {toolA?.name} if...</h3>
+          </div>
+          <ul class="space-y-2">
+            {c.use_zapier_if.map((item) => (
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-[#FF4F00] font-bold mt-0.5 flex-shrink-0">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href={toolA?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block w-full text-center bg-[#FF4F00] hover:opacity-90 text-white font-bold py-3 rounded-xl transition-opacity text-sm mt-5">
+            Try {toolA?.name} Free
+          </a>
+        </div>
+        <div class="border-2 border-[#6D00CC]/30 bg-purple-50 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 bg-[#6D00CC] rounded-xl flex items-center justify-center text-white font-extrabold text-lg">{toolB?.name[0]}</div>
+            <h3 class="font-extrabold text-[#1A2F4E] text-base">Choose {toolB?.name} if...</h3>
+          </div>
+          <ul class="space-y-2">
+            {c.use_make_if.map((item) => (
+              <li class="flex items-start gap-2 text-sm text-gray-700">
+                <span class="text-[#6D00CC] font-bold mt-0.5 flex-shrink-0">✓</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+          <a href={toolB?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="block w-full text-center bg-[#6D00CC] hover:opacity-90 text-white font-bold py-3 rounded-xl transition-opacity text-sm mt-5">
+            Try {toolB?.name} Free
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEWSLETTER MID -->
+    <section>
+      <NewsletterSignup variant="light" />
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-6">
+        {toolA?.name} vs {toolB?.name}: Frequently Asked Questions
+      </h2>
+      <div class="space-y-4">
+        {c.faqs.map((faq) => (
+          <div class="border border-gray-200 rounded-xl overflow-hidden">
+            <details class="group">
+              <summary class="flex items-center justify-between px-5 py-4 cursor-pointer font-semibold text-[#1A2F4E] text-sm hover:bg-gray-50 transition-colors">
+                {faq.q}
+                <span class="text-[#0ABFB8] text-lg font-bold ml-4 flex-shrink-0">+</span>
+              </summary>
+              <div class="px-5 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                {faq.a}
+              </div>
+            </details>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- FINAL VERDICT REPEAT -->
+    <section class="bg-[#1A2F4E] rounded-2xl p-6 md:p-8 text-center">
+      <p class="text-xs font-bold text-[#0ABFB8] tracking-widest uppercase mb-3">Bottom Line</p>
+      <h2 class="text-2xl font-extrabold text-white mb-3">{c.verdict_headline}</h2>
+      <p class="text-gray-300 mb-6 max-w-xl mx-auto">{c.verdict_detail}</p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+        <a href={winner?.affiliate_url} target="_blank" rel="noopener noreferrer nofollow" class="flex-1 block text-center bg-[#0ABFB8] hover:bg-[#09A8A2] text-white font-extrabold py-3.5 rounded-xl transition-colors">
+          Try {winner?.name} Free
+        </a>
+        <a href={toolA?.slug === winner?.slug ? (toolB?.affiliate_url || "#") : (toolA?.affiliate_url || "#")} target="_blank" rel="noopener noreferrer nofollow" class="flex-1 block text-center border border-white/30 hover:border-white text-white font-bold py-3.5 rounded-xl transition-colors text-sm">
+          Try {toolA?.slug === winner?.slug ? toolB?.name : toolA?.name} Instead
+        </a>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- NEWSLETTER STRIP -->
+  <section class="py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+      <NewsletterSignup variant="teal" />
+    </div>
+  </section>
+
+  <!-- BOTTOM CTA -->
+  <section class="py-14 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+      <h2 class="text-2xl font-extrabold text-[#1A2F4E] mb-3">Want us to set this up for your business?</h2>
+      <p class="text-gray-500 mb-6 max-w-xl mx-auto">Our Automation and AI specialists implement the right tool for your exact workflows. Fixed price. No commitment required.</p>
+      <a href="/tools/zapier#setup" class="inline-block bg-[#1A2F4E] hover:bg-[#0ABFB8] text-white font-bold px-8 py-4 rounded-xl transition-colors">
+        Request a Setup Quote
+      </a>
+    </div>
+  </section>
+
+</Layout>
